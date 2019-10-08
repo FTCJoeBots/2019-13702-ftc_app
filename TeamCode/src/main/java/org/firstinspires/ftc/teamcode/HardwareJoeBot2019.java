@@ -52,6 +52,10 @@ public class HardwareJoeBot2019 {
     public DcMotor motor3 = null; // Right Rear
     public DcMotor liftMotor = null;
 
+    // Declare Servos
+    public Servo clampServo = null;
+    public Servo rotClampServo = null;
+
     // Declare Sensors
     public BNO055IMU imu;                  // The IMU sensor object
 
@@ -96,6 +100,13 @@ public class HardwareJoeBot2019 {
     static final double LIFT_GEAR_REDUCTION = 1;
     static final double LIFT_COUNTS_PER_MOTOR_REV = 4.0;
     static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
+
+    static final double CLAMP_OPEN_POSITION = 0.99;
+    static final double CLAMP_CLOSED_POSITION = 0.01;
+
+    static final double CLAMP_HORIZONTAL_POSITION = 0.99;
+    static final double CLAMP_VERTICAL_POSITION = 0.01;
+
     /* Constructor */
     public HardwareJoeBot2019() {
 
@@ -115,6 +126,9 @@ public class HardwareJoeBot2019 {
         motor3 = hwMap.dcMotor.get("motor3");
         liftMotor = hwMap.dcMotor.get("liftMotor");
 
+        clampServo = hwMap.servo.get("clampServo");
+        rotClampServo = hwMap.servo.get("rotClampServo");
+
         //liftBucketMotor = hwMap.dcMotor.get("liftBucketMotor");
         //mainBucketMotor = hwMap.dcMotor.get("mainBucketMotor");
         //intakeMotor = hwMap.dcMotor.get("intakeMotor");
@@ -132,6 +146,10 @@ public class HardwareJoeBot2019 {
         motor2.setPower(0);
         motor3.setPower(0);
         liftMotor.setPower(0);
+
+        clampServo.setPosition(CLAMP_CLOSED_POSITION);
+        rotClampServo.setPosition(CLAMP_VERTICAL_POSITION);
+
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
 
@@ -209,6 +227,7 @@ public class HardwareJoeBot2019 {
         motor1.setMode(mode);
         motor2.setMode(mode);
         motor3.setMode(mode);
+        liftMotor.setMode(mode);
     }
 
     /**
@@ -227,8 +246,6 @@ public class HardwareJoeBot2019 {
         double power1;
         double power2;
         double power3;
-        double liftPower;
-        double mainPower;
 
         double max;
 
@@ -279,6 +296,7 @@ public class HardwareJoeBot2019 {
         motor1.setPower(0);
         motor2.setPower(0);
         motor3.setPower(0);
+        liftMotor.setPower(0);
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
 
@@ -368,27 +386,6 @@ public class HardwareJoeBot2019 {
 
     }
 
-
-    public void liftAndScore() {
-        /*
-        shoulder up
-        elbow up
-        intake mostly up
-        */
-        // backwardToggle();
-
-    }
-
-
-    //methods a lpenty.
-    //no longer intake
-
-    /**
-     * resetImuAngle()
-     * <p>
-     * Method to grab the current reading from the IMU and set the cumulative angle tracking
-     * to 0
-     */
 
     private void resetAngle() {
 
@@ -677,6 +674,76 @@ public class HardwareJoeBot2019 {
             // Set the motors back to standard mode
             setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
+    }
+
+    public void openClamp(){
+
+        myOpMode.telemetry.addData("opening clamp", clampServo.getPosition());
+        myOpMode.telemetry.update();
+        clampServo.setPosition(CLAMP_OPEN_POSITION);
+
+    }
+
+    public void closeClamp(){
+
+        myOpMode.telemetry.addData("closing clamp", clampServo.getPosition());
+        myOpMode.telemetry.update();
+        clampServo.setPosition(CLAMP_CLOSED_POSITION);
+
+    }
+
+    public void toggleClampOpen(){
+
+       double clampServoPosition = clampServo.getPosition();
+
+        if(clampServoPosition < .5){
+
+            myOpMode.telemetry.addLine("servo is closed, opening");
+            myOpMode.telemetry.update();
+            openClamp();
+
+        }else{
+
+            myOpMode.telemetry.addLine("servo is opened, closing");
+            myOpMode.telemetry.update();
+            closeClamp();
+        }
+
+    }
+
+
+    public void clampHorizontal(){
+
+        myOpMode.telemetry.addData("moving clamp horizontal", rotClampServo.getPosition());
+        myOpMode.telemetry.update();
+        rotClampServo.setPosition(CLAMP_HORIZONTAL_POSITION);
+
+    }
+
+    public void clampVertical(){
+
+        myOpMode.telemetry.addData("moving clamp vertical", rotClampServo.getPosition());
+        myOpMode.telemetry.update();
+        rotClampServo.setPosition(CLAMP_VERTICAL_POSITION);
+
+    }
+
+    public void toggleClampDirection(){
+
+        if(rotClampServo.getPosition() < 0.5){
+
+            myOpMode.telemetry.addLine("clamp is vertical, moving horizontal");
+            myOpMode.telemetry.update();
+            clampHorizontal();
+
+        }else{
+
+            myOpMode.telemetry.addLine("clamp is horizontal, moving vertical");
+            myOpMode.telemetry.update();
+            clampVertical();
+
+        }
+
     }
 }
 

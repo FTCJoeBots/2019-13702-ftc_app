@@ -52,7 +52,7 @@ public class HardwareJoeBot2019 {
     public DcMotor motor3 = null; // Right Rear
     public DcMotor liftMotor = null;
 
-    //  Declare Servos
+    // Declare Servos
     public Servo clampServo = null;
     public Servo rotClampServo = null;
 

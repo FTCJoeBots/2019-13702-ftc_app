@@ -42,23 +42,23 @@ public class teleOpSimpleMecanum extends LinearOpMode {
     double max;
 
     HardwareJoeBot2018 robot = new HardwareJoeBot2018();
+    Utility13702       U = new Utility13702();
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-
-
-
+        U.init(hardwareMap, this);
         robot.init(hardwareMap, this);
 
-
         waitForStart();
-
-
 
         //start of loop
         while (opModeIsActive()) {
 
+
+           /* telemetry.addData("rotClampServo:", U.rotClampServo.getPosition());
+            telemetry.addData("ClampServo:", U.clampServo.getPosition());
+            telemetry.update(); */
 
             //Drive Via "Analog Sticks" (Not Toggle)
             //Set initial motion parameters to Gamepad1 Inputs
@@ -104,6 +104,25 @@ public class teleOpSimpleMecanum extends LinearOpMode {
 
 
 
+            if(gamepad2.a){
+                U.toggleClampOpen();
+            }
+
+            if(gamepad2.b){
+                U.toggleClampDirection();
+            }
+
+
+            /*
+            double leftStick2 = gamepad2.left_stick_y;
+                U.liftMotor.setPower(leftStick2);
+
+            while(gamepad2.right_stick_y > 0){
+                U.armMotor.setPower(0.5);
+            }*/
+
+
+
 
 
             //------------------------------------------
@@ -115,11 +134,19 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             telemetry.addData(">", "Press Stop to end test.");
 
             if (gamepad1.a) {
-                telemetry.addLine("Button A is pressed");
+                telemetry.addLine("Button A is pressed on pad 1");
             } else if (gamepad1.b) {
-                telemetry.addLine("Button B is pressed");
+                telemetry.addLine("Button B is pressed on pad 1");
             } else {
-                telemetry.addLine("Neither button is pressed");
+                telemetry.addLine("Neither button is pressed on pad 1");
+            }
+
+            if (gamepad2.a) {
+                telemetry.addLine("Button A is pressed on pad 2");
+            } else if (gamepad2.b) {
+                telemetry.addLine("Button B is pressed on pad 2");
+            } else {
+                telemetry.addLine("Neither button is pressed on pad 2");
             }
 
             telemetry.update();

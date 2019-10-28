@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
  *import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -26,22 +25,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * List of issues at Comp(1)-> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1r_liipKBU7GHfONdxq9E6d4f7zikcCuXwDL2bsQfwm0/edit?usp=sharing
  *G-Sheet of time VS Heading for autonomous -> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1pqv0iN94fFd5KvX1YIWP7z39HgpURXsscn0zPujs1q4/edit?usp=sharing
 */
-@TeleOp(name="Simple Mecanum Drive", group="TeleOp")
+@TeleOp(name="Servo TeleOp Test", group="TeleOp")
 
-public class teleOpSimpleMecanum extends LinearOpMode {
+public class servoTele extends LinearOpMode {
 
-    double forward;
-    double clockwise;
-    double right;
-    double k;
-    double power0;
-    double power1;
-    double power2;
-    double power3;
-    double liftpower;
-    double max;
+    double leftIntakeServoPos = 0.3;
 
-    HardwareJoeBot2018 robot = new HardwareJoeBot2018();
+    HardwareJoeBot2019 robot = new HardwareJoeBot2019();
     Utility13702       U = new Utility13702();
 
     @Override
@@ -50,78 +40,26 @@ public class teleOpSimpleMecanum extends LinearOpMode {
         U.init(hardwareMap, this);
         robot.init(hardwareMap, this);
 
+        telemetry.addLine("initialized");
+
         waitForStart();
 
         //start of loop
         while (opModeIsActive()) {
 
+            if(gamepad1.dpad_up == true){
+                leftIntakeServoPos += 0.05;
+                U.leftIntakeServo.setPosition(leftIntakeServoPos);
+                gamepad1.dpad_up=false;
+                sleep(1000);
 
-           /* telemetry.addData("rotClampServo:", U.rotClampServo.getPosition());
-            telemetry.addData("ClampServo:", U.clampServo.getPosition());
-            telemetry.update(); */
-
-            //Drive Via "Analog Sticks" (Not Toggle)
-            //Set initial motion parameters to Gamepad1 Inputs
-            forward = -gamepad1.left_stick_y;
-            //right = gamepad1.left_stick_x;
-            right = -gamepad1.left_trigger + gamepad1.right_trigger;
-            clockwise = gamepad1.right_stick_x;
-
-            // Add a tuning constant "K" to tune rotate axis sensitivity
-            k = .6;
-            clockwise = clockwise * k; //Make sure the "= Clockwise" is "= -clockwise"
-
-
-            // Calculate motor power
-            power0 = forward + clockwise + right;
-            power1 = forward - clockwise - right;
-            power2 = forward + clockwise - right;
-            power3 = forward - clockwise + right;
-
-            // Normalize Wheel speeds so that no speed exceeds 1.0
-            max = Math.abs(power0);
-            if (Math.abs(power1) > max) {
-                max = Math.abs(power1);
-            }
-            if (Math.abs(power2) > max) {
-                max = Math.abs(power2);
-            }
-            if (Math.abs(power3) > max) {
-                max = Math.abs(power3);
             }
 
-            if (max > 1) {
-                power0 /= max;
-                power1 /= max;
-                power2 /= max;
-                power3 /= max;
+            if(gamepad1.dpad_down == true){
+                leftIntakeServoPos -= 0.05;
+                U.leftIntakeServo.setPosition(leftIntakeServoPos);
+                sleep(1000);
             }
-
-            robot.motor0.setPower(power0);
-            robot.motor1.setPower(power1);
-            robot.motor2.setPower(power2);
-            robot.motor3.setPower(power3);
-
-
-
-            if(gamepad2.a){
-                U.toggleClampOpen();
-            }
-
-            if(gamepad2.b){
-                U.toggleClampDirection();
-            }
-
-
-            /*
-            double leftStick2 = gamepad2.left_stick_y;
-                U.liftMotor.setPower(leftStick2);
-
-            while(gamepad2.right_stick_y > 0){
-                U.armMotor.setPower(0.5);
-            }*/
-
-
 
 
 
@@ -149,12 +87,11 @@ public class teleOpSimpleMecanum extends LinearOpMode {
                 telemetry.addLine("Neither button is pressed on pad 2");
             }
 
+            telemetry.addData("leftIntakeServo", leftIntakeServoPos);
+            telemetry.update();
+
             telemetry.update();
             idle();
-
-            telemetry.addLine();
-
-
 
 
         }//end while

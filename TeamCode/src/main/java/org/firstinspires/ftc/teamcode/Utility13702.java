@@ -47,10 +47,15 @@ public class Utility13702 {
     // Declare Motors
     public DcMotor liftMotor = null;
     public DcMotor armMotor = null;
+    public DcMotor leftIntake = null;
+    public DcMotor rightIntake = null;
 
     // Declare Servos
     public Servo clampServo = null;
     public Servo rotClampServo = null;
+    public Servo leftIntakeServo = null;
+    public Servo rightIntakeServo = null;
+    public Servo grabberServo = null;
 
     /* local OpMode members. */
     HardwareMap hwMap = null;
@@ -72,11 +77,26 @@ public class Utility13702 {
     static final double ARM_COUNTS_PER_INCH = (ARM_THREADS_PER_INCH * ARM_GEAR_REDUCTION * ARM_COUNTS_PER_MOTOR_REV);
 
 
-    static final double CLAMP_OPEN_POSITION = 0.99;
-    static final double CLAMP_CLOSED_POSITION = 0.01;
+    static final double CLAMP_OPEN_POSITION = 0.3;
+    static final double CLAMP_CLOSED_POSITION = 0.15;
 
-    static final double CLAMP_HORIZONTAL_POSITION = 0.99;
-    static final double CLAMP_VERTICAL_POSITION = 0.01;
+    static final double CLAMP_HORIZONTAL_POSITION = 0.5;
+    static final double CLAMP_VERTICAL_POSITION = 0.15;
+    static final double CLAMP_VERTICAL_SLANTED_POSITION = 0.2;
+    static final double CLAMP_HORIZOTAL_SLANTED_POSITION = 0.55;
+
+    static final double GRABBER_CLOSED_POSITION = 0.85;
+    static final double GRABBER_OPEN_POSITION = 0.05;
+
+    static final double RIGHT_INTAKE_SERVO_UP_POSITION = 0.25;
+    static final double RIGHT_INTAKE_SERVO_DOWN_POSITION = 0.01;
+
+    static final double LEFT_INTAKE_SERVO_OUT_POSITION = 0.25;
+    static final double LEFT_INTAKE_SERVO_IN_POSITION = 0.65;
+
+    double leftIntakeServoCurr = LEFT_INTAKE_SERVO_IN_POSITION;
+
+    boolean rightIntakeServoUp = true;
 
     /* Constructor */
     public Utility13702() {
@@ -93,20 +113,32 @@ public class Utility13702 {
         // Define and Initialize Motors
         liftMotor = hwMap.dcMotor.get("liftMotor");
         armMotor = hwMap.dcMotor.get("armMotor");
+        leftIntake = hwMap.dcMotor.get("leftIntake");
+        rightIntake = hwMap.dcMotor.get("rightIntake");
 
         clampServo = hwMap.servo.get("clampServo");
         rotClampServo = hwMap.servo.get("rotClampServo");
+        leftIntakeServo = hwMap.servo.get("leftIntakeServo");
+        rightIntakeServo = hwMap.servo.get("rightIntakeServo");
+        grabberServo = hwMap.servo.get("grabberServo");
 
         // Set Default Motor Directions
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
         armMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftIntake.setDirection(DcMotor.Direction.FORWARD);
+        rightIntake.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
         liftMotor.setPower(0);
         armMotor.setPower(0);
+        leftIntake.setPower(0);
+        rightIntake.setPower(0);
 
-       // clampServo.setPosition(CLAMP_CLOSED_POSITION);
-       // rotClampServo.setPosition(CLAMP_VERTICAL_POSITION);
+        clampServo.setPosition(CLAMP_CLOSED_POSITION);
+        rotClampServo.setPosition(CLAMP_VERTICAL_POSITION);
+        leftIntakeServo.setPosition(LEFT_INTAKE_SERVO_OUT_POSITION);
+        rightIntakeServo.setPosition(RIGHT_INTAKE_SERVO_DOWN_POSITION);
+        grabberServo.setPosition(GRABBER_OPEN_POSITION);
 
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
@@ -119,6 +151,8 @@ public class Utility13702 {
         // May want to switch to  RUN_USING_ENCODERS during autonomous
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
@@ -151,6 +185,8 @@ public class Utility13702 {
     public void setMode(DcMotor.RunMode mode) {
         liftMotor.setMode(mode);
         armMotor.setMode(mode);
+        leftIntake.setMode(mode);
+        rightIntake.setMode(mode);
     }
 
     public void liftMotorInches(double inches, double power){
@@ -179,8 +215,12 @@ public class Utility13702 {
         }
     }
 
+    public void moveLift(double power){
+        liftMotor.setPower(power);
+    }
 
-    public void armMotorInches(double inches, double power){
+
+    public void armMotorInches(double inches, double power) {
 
         // Declare needed variables
         int newArmMotorTarget;
@@ -207,73 +247,183 @@ public class Utility13702 {
         }
     }
 
-    public void openClamp(){
 
-        myOpMode.telemetry.addData("opening clamp", clampServo.getPosition());
-        myOpMode.telemetry.update();
+    public void moveArm(double power){
+            armMotor.setPower(power);
+    }
+
+/////////////////////////////////////////////////////////////////////////////
+    public void openClampPos(){
+
         clampServo.setPosition(CLAMP_OPEN_POSITION);
 
     }
 
-    public void closeClamp(){
+    public void closeClampPos(){
 
-        myOpMode.telemetry.addData("closing clamp", clampServo.getPosition());
-        myOpMode.telemetry.update();
         clampServo.setPosition(CLAMP_CLOSED_POSITION);
 
     }
 
-    public void toggleClampOpen(){
+/////////////////////////////////////////////////////////////////////////////
+    public void clampHorizontalPos(){
 
-       double clampServoPosition = clampServo.getPosition();
-
-        if(clampServoPosition < .5){
-
-            myOpMode.telemetry.addLine("servo is closed, opening");
-            myOpMode.telemetry.update();
-            openClamp();
-
-        }else{
-
-            myOpMode.telemetry.addLine("servo is opened, closing");
-            myOpMode.telemetry.update();
-            closeClamp();
-        }
-
-    }
-
-
-    public void clampHorizontal(){
-
-        myOpMode.telemetry.addData("moving clamp horizontal", rotClampServo.getPosition());
-        myOpMode.telemetry.update();
         rotClampServo.setPosition(CLAMP_HORIZONTAL_POSITION);
 
     }
 
     public void clampVertical(){
 
-        myOpMode.telemetry.addData("moving clamp vertical", rotClampServo.getPosition());
-        myOpMode.telemetry.update();
         rotClampServo.setPosition(CLAMP_VERTICAL_POSITION);
 
     }
 
-    public void toggleClampDirection(){
+    public void clampVerticalSlanted(){
 
-        if(rotClampServo.getPosition() < 0.5){
+        rotClampServo.setPosition(CLAMP_VERTICAL_SLANTED_POSITION);
 
-            myOpMode.telemetry.addLine("clamp is vertical, moving horizontal");
-            myOpMode.telemetry.update();
-            clampHorizontal();
+    }
 
-        }else{
+    public void clampHorizotalSlanted(){
 
-            myOpMode.telemetry.addLine("clamp is horizontal, moving vertical");
-            myOpMode.telemetry.update();
-            clampVertical();
+        rotClampServo.setPosition(CLAMP_HORIZOTAL_SLANTED_POSITION);
+
+    }
+/////////////////////////////////////////////////////////////////////////////
+
+    //the three teleOp methods for clamp control
+
+    public void grabBlock(){
+
+        clampVerticalSlanted();
+        openClampPos();
+
+        leftIntakeServo.setPosition(LEFT_INTAKE_SERVO_OUT_POSITION);
+
+        leftIntakeServoCurr = 0.50;
+
+        myOpMode.telemetry.addLine("grab block position");
+        myOpMode.telemetry.update();
 
         }
+
+    public void closeClamp(){
+
+        clampVertical();
+        closeClampPos();
+
+        myOpMode.telemetry.addLine("close block position");
+        myOpMode.telemetry.update();
+
+    }
+
+    public void clampClosedHorizontal(){
+
+       clampHorizontalPos();
+       closeClampPos();
+
+        myOpMode.telemetry.addLine("close horizontal position");
+        myOpMode.telemetry.update();
+
+    }
+
+    public void clampOpenHorizontal(){
+
+        clampHorizotalSlanted();
+        openClampPos();
+
+        myOpMode.telemetry.addLine("open horizontal position");
+        myOpMode.telemetry.update();
+
+    }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public void spinIntake(){
+
+        myOpMode.telemetry.addLine("start intake wheels");
+        myOpMode.telemetry.update();
+
+        //spin both intake motors
+        leftIntake.setPower(0.95);
+        rightIntake.setPower(0.95);
+    }
+
+    public void stopIntake(){
+
+        myOpMode.telemetry.addLine("stop intake wheels");
+        myOpMode.telemetry.update();
+
+        //stops both intake motors
+        leftIntake.setPower(0);
+        rightIntake.setPower(0);
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void closeGrabber(){
+        grabberServo.setPosition(GRABBER_CLOSED_POSITION);
+
+        myOpMode.telemetry.addLine("foudation grabber servo closing");
+        myOpMode.telemetry.update();
+    }
+
+    public void openGrabber(){
+        grabberServo.setPosition(GRABBER_OPEN_POSITION);
+
+        myOpMode.telemetry.addLine("foudation grabber servo opening");
+        myOpMode.telemetry.update();
+    }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void rightIntakeServoUpPos(){
+        rightIntakeServoUp = true;
+
+        rightIntakeServo.setPosition(RIGHT_INTAKE_SERVO_DOWN_POSITION);
+
+        rightIntakeServoUp = false;
+    }
+
+    public void rightIntakeServoDownPos(){
+        rightIntakeServoUp = false;
+
+        rightIntakeServo.setPosition(RIGHT_INTAKE_SERVO_UP_POSITION);
+
+        rightIntakeServoUp = true;
+    }
+
+    public void toggleRightIntakeServo(){
+
+        if(rightIntakeServoUp){
+            rightIntakeServoUpPos();
+        }else{
+            rightIntakeServoDownPos();
+        }
+    }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void leftIntakeServoIn(){
+        leftIntakeServo.setPosition(LEFT_INTAKE_SERVO_IN_POSITION);
+    }
+
+    public void leftIntakeServoOut(){
+        leftIntakeServo.setPosition(LEFT_INTAKE_SERVO_OUT_POSITION);
+    }
+
+    public void moveLeftIntakeServo(boolean direction){
+        //true = left, false = right
+        if(leftIntakeServoCurr < LEFT_INTAKE_SERVO_IN_POSITION || leftIntakeServoCurr > LEFT_INTAKE_SERVO_OUT_POSITION){
+            if(direction) {
+
+                leftIntakeServoCurr = leftIntakeServoCurr - 0.1;
+            }else{
+
+                leftIntakeServoCurr = leftIntakeServoCurr + 0.1;
+            }
+
+                leftIntakeServo.setPosition(leftIntakeServoCurr);
+
+        }
+
+
 
     }
 }

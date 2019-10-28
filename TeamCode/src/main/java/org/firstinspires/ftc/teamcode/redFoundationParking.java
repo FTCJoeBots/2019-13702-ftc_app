@@ -38,13 +38,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="Vuforia Skeleton", group="Pushbot")
+@Autonomous(name="Red Foundation", group="Pushbot")
 //@Disabled
-public class VuforiaSkeleton extends LinearOpMode {
+public class redFoundationParking extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
-    Utility13702        Utility = new Utility13702();
+    Utility13702      U   = new Utility13702();
     Image_Recognition    V = new Image_Recognition();
     private ElapsedTime     runtime = new ElapsedTime();
 
@@ -56,19 +56,27 @@ public class VuforiaSkeleton extends LinearOpMode {
         telemetry.update();
 
         robot.init(hardwareMap,this);
-        V.init(hardwareMap, this);
-
-        double coords[] = V.skystone_cooridinates();
-
+        U.init(hardwareMap,this);
         waitForStart();
-       //coords[0] is the distance from the image
-        // coords[1] is the distance left or right of the image
-        //you'll have to call skystone_coordinates() a few times
-        //   that'll return 777 if it doesn't see anything
+
+        //move to foundation
+        robot.moveInches(-49,0.75, 10);
+        robot.moveRobot(0, -10,0);
+
+        //grab foundation
+        U.closeGrabber();
+
+        //drive into building site
+        robot.moveInches(50, 0.6,15);
+
+        //release grabber
+        U.openGrabber();
+
+        //back up under skybridge
+        robot.moveInches(-68,0.75,10);
 
         telemetry.addLine("We're done. Press stop.");
         telemetry.update();
-
 
     }
 

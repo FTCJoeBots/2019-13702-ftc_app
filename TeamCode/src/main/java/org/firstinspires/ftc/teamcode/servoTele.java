@@ -29,7 +29,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 public class servoTele extends LinearOpMode {
 
-    double leftIntakeServoPos = 0.3;
+    double clampServoPos = 0.3;
+    double rotClampServoPos = 0.3;
 
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
     Utility13702       U = new Utility13702();
@@ -48,16 +49,30 @@ public class servoTele extends LinearOpMode {
         while (opModeIsActive()) {
 
             if(gamepad1.dpad_up == true){
-                leftIntakeServoPos += 0.05;
-                U.leftIntakeServo.setPosition(leftIntakeServoPos);
+                clampServoPos += 0.05;
+                U.clampServo.setPosition(clampServoPos);
                 gamepad1.dpad_up=false;
                 sleep(1000);
 
             }
 
             if(gamepad1.dpad_down == true){
-                leftIntakeServoPos -= 0.05;
-                U.leftIntakeServo.setPosition(leftIntakeServoPos);
+                clampServoPos -= 0.05;
+                U.clampServo.setPosition(clampServoPos);
+                sleep(1000);
+            }
+
+            if(gamepad1.dpad_right == true){
+                rotClampServoPos += 0.05;
+                U.rotClampServo.setPosition(rotClampServoPos);
+                gamepad1.dpad_up=false;
+                sleep(1000);
+
+            }
+
+            if(gamepad1.dpad_left == true){
+                rotClampServoPos -= 0.05;
+                U.rotClampServo.setPosition(rotClampServoPos);
                 sleep(1000);
             }
 
@@ -87,7 +102,8 @@ public class servoTele extends LinearOpMode {
                 telemetry.addLine("Neither button is pressed on pad 2");
             }
 
-            telemetry.addData("leftIntakeServo", leftIntakeServoPos);
+            telemetry.addData("clamp servo", clampServoPos);
+            telemetry.addData("rot clamp servo", rotClampServoPos);
             telemetry.update();
 
             telemetry.update();

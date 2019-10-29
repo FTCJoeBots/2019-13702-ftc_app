@@ -49,6 +49,9 @@ public class TeleOp2019 extends LinearOpMode {
     boolean currdpadRight;
     boolean prevdpadRight = false;
 
+    boolean curra1;
+    boolean preva1 = false;
+
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
     Utility13702       U = new Utility13702();
 
@@ -138,10 +141,11 @@ public class TeleOp2019 extends LinearOpMode {
             }
                 prevY = currY;
 
-
-            if(gamepad1.a){
+          curra1 = gamepad1.a;
+            if(curra1 && curra1 != preva1){
                 U.toggleRightIntakeServo();
             }
+            preva1 = curra1;
 
             if(gamepad1.b){
                 U.closeGrabber();

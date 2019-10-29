@@ -80,10 +80,10 @@ public class Utility13702 {
     static final double CLAMP_OPEN_POSITION = 0.3;
     static final double CLAMP_CLOSED_POSITION = 0.15;
 
-    static final double CLAMP_HORIZONTAL_POSITION = 0.5;
-    static final double CLAMP_VERTICAL_POSITION = 0.15;
-    static final double CLAMP_VERTICAL_SLANTED_POSITION = 0.2;
-    static final double CLAMP_HORIZOTAL_SLANTED_POSITION = 0.55;
+    static final double CLAMP_HORIZONTAL_POSITION = 0.4;
+    static final double CLAMP_VERTICAL_POSITION = 0.05;
+    static final double CLAMP_VERTICAL_SLANTED_POSITION = 0.1;
+    static final double CLAMP_HORIZOTAL_SLANTED_POSITION = 0.45;
 
     static final double GRABBER_CLOSED_POSITION = 0.85;
     static final double GRABBER_OPEN_POSITION = 0.05;
@@ -91,8 +91,8 @@ public class Utility13702 {
     static final double RIGHT_INTAKE_SERVO_UP_POSITION = 0.25;
     static final double RIGHT_INTAKE_SERVO_DOWN_POSITION = 0.01;
 
-    static final double LEFT_INTAKE_SERVO_OUT_POSITION = 0.25;
-    static final double LEFT_INTAKE_SERVO_IN_POSITION = 0.65;
+    static final double LEFT_INTAKE_SERVO_OUT_POSITION = 0.4;
+    static final double LEFT_INTAKE_SERVO_IN_POSITION = 0.9;
 
     double leftIntakeServoCurr = LEFT_INTAKE_SERVO_IN_POSITION;
 
@@ -125,8 +125,8 @@ public class Utility13702 {
         // Set Default Motor Directions
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
         armMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftIntake.setDirection(DcMotor.Direction.FORWARD);
-        rightIntake.setDirection(DcMotor.Direction.REVERSE);
+        leftIntake.setDirection(DcMotor.Direction.REVERSE);
+        rightIntake.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero power
         liftMotor.setPower(0);
@@ -136,8 +136,8 @@ public class Utility13702 {
 
         clampServo.setPosition(CLAMP_CLOSED_POSITION);
         rotClampServo.setPosition(CLAMP_VERTICAL_POSITION);
-        leftIntakeServo.setPosition(LEFT_INTAKE_SERVO_OUT_POSITION);
-        rightIntakeServo.setPosition(RIGHT_INTAKE_SERVO_DOWN_POSITION);
+        leftIntakeServo.setPosition(LEFT_INTAKE_SERVO_IN_POSITION);
+        rightIntakeServo.setPosition(RIGHT_INTAKE_SERVO_UP_POSITION);
         grabberServo.setPosition(GRABBER_OPEN_POSITION);
 
         myOpMode.telemetry.addLine("initialized motor power to zero");

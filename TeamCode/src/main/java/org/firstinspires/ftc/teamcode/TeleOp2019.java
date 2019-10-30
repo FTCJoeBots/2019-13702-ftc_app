@@ -52,6 +52,12 @@ public class TeleOp2019 extends LinearOpMode {
     boolean curra1;
     boolean preva1 = false;
 
+    boolean currx2;
+    boolean prevx2 = false;
+
+    boolean curra2;
+    boolean preva2 = false;
+
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
     Utility13702       U = new Utility13702();
 
@@ -113,18 +119,22 @@ public class TeleOp2019 extends LinearOpMode {
             robot.motor2.setPower(power2);
             robot.motor3.setPower(power3);
 
-/////////////////////////////////////////////////////////////////////////////
-            if(gamepad2.b){
-                U.clampOpenHorizontal();
-            }
+////////////////////////////////////////////////////////////////////////////
 
-            if(gamepad2.a){
-                U.closeClamp();
+            curra2 = gamepad2.a;
+            if(curra2 && curra2 != preva2){
+                U.clampVertical();
             }
+            preva2 = curra2;
 
-            if(gamepad2.x){
-                U.grabBlock();
+
+
+            if(gamepad2.x != prevx2){
+                U.openClampPos();
+            }else{
+                U.closeClampPos();
             }
+            prevx2 = currx2;
 
             if(gamepad2.y) {
                 U.clampClosedHorizontal();

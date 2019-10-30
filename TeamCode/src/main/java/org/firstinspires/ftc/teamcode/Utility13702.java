@@ -97,6 +97,7 @@ public class Utility13702 {
     double leftIntakeServoCurr = LEFT_INTAKE_SERVO_IN_POSITION;
 
     boolean rightIntakeServoUp = true;
+    boolean isClampVertical = true;
 
     /* Constructor */
     public Utility13702() {
@@ -289,6 +290,12 @@ public class Utility13702 {
         rotClampServo.setPosition(CLAMP_HORIZOTAL_SLANTED_POSITION);
 
     }
+
+    public void clampDirectionToggle(){
+
+
+
+    }
 /////////////////////////////////////////////////////////////////////////////
 
     //the three teleOp methods for clamp control
@@ -297,10 +304,6 @@ public class Utility13702 {
 
         clampVerticalSlanted();
         openClampPos();
-
-        leftIntakeServo.setPosition(LEFT_INTAKE_SERVO_OUT_POSITION);
-
-        leftIntakeServoCurr = 0.50;
 
         myOpMode.telemetry.addLine("grab block position");
         myOpMode.telemetry.update();
@@ -336,6 +339,7 @@ public class Utility13702 {
         myOpMode.telemetry.update();
 
     }
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void spinIntake(){
 

@@ -71,6 +71,9 @@ public class Utility13702 {
     static final double LIFT_COUNTS_PER_MOTOR_REV = 4.0;
     static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
 
+    static final int LIFT_UP_POSITION = -2600;
+    static final int LIFT_DOWN_POSITION = 0;
+
     static final double ARM_THREADS_PER_INCH = 777;
     static final double ARM_GEAR_REDUCTION = 777;
     static final double ARM_COUNTS_PER_MOTOR_REV = 777;
@@ -98,6 +101,12 @@ public class Utility13702 {
 
     boolean rightIntakeServoUp = true;
     boolean isClampVertical = true;
+    boolean grabberOpen = true;
+
+    int liftTarget = 0;
+
+    int armTarget = 0;
+
 
     /* Constructor */
     public Utility13702() {
@@ -150,8 +159,10 @@ public class Utility13702 {
 
         // Set all drive motors to run without encoders.
         // May want to switch to  RUN_USING_ENCODERS during autonomous
-        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftMotor.setTargetPosition(0);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+       // armMotor.setTargetPosition(0);
         leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -220,6 +231,36 @@ public class Utility13702 {
         liftMotor.setPower(power);
     }
 
+    public void moveLiftEncoder (double stickPos){
+        //myOpMode.telemetry.addData("stick",stickPos);
+        if(stickPos < -0.2){
+            if(liftTarget > -2600){
+                liftTarget = liftMotor.getCurrentPosition() - 80;
+                //myOpMode.telemetry.addData("LiftTarget",liftTarget);
+            }
+            liftMotor.setTargetPosition(liftTarget);
+
+            liftMotor.setPower(1);
+
+            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        }
+
+        if(stickPos > 0.2){
+            if(liftTarget < 0) {
+                liftTarget = liftMotor.getCurrentPosition() + 80;
+            }
+
+            liftMotor.setTargetPosition(liftTarget);
+
+            liftMotor.setPower(1);
+
+            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        }
+
+    }
+
 
     public void armMotorInches(double inches, double power) {
 
@@ -248,6 +289,34 @@ public class Utility13702 {
         }
     }
 
+   /* public void moveArmEncoder (double stickPos){
+        //myOpMode.telemetry.addData("stick",stickPos);
+        if(stickPos < -0.2){
+            if(armTarget > 0){
+                armTarget = armMotor.getCurrentPosition() + 75;
+            }
+            armMotor.setTargetPosition(armTarget);
+
+            armMotor.setPower(0.75);
+
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        }
+
+        if(stickPos > 0.2){
+            if(armTarget < 2000) {
+                armTarget = armMotor.getCurrentPosition() - 75;
+            }
+
+            armMotor.setTargetPosition(armTarget);
+
+            armMotor.setPower(0.75);
+
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        }
+
+    }*/
 
     public void moveArm(double power){
             armMotor.setPower(power);
@@ -271,11 +340,15 @@ public class Utility13702 {
 
         rotClampServo.setPosition(CLAMP_HORIZONTAL_POSITION);
 
+        isClampVertical = false;
+
     }
 
     public void clampVertical(){
 
         rotClampServo.setPosition(CLAMP_VERTICAL_POSITION);
+
+        isClampVertical = true;
 
     }
 
@@ -283,18 +356,34 @@ public class Utility13702 {
 
         rotClampServo.setPosition(CLAMP_VERTICAL_SLANTED_POSITION);
 
+        isClampVertical = true;
+
     }
 
-    public void clampHorizotalSlanted(){
+    public void clampHorizontalSlanted(){
 
         rotClampServo.setPosition(CLAMP_HORIZOTAL_SLANTED_POSITION);
+
+        isClampVertical = false;
 
     }
 
     public void clampDirectionToggle(){
 
+        if(isClampVertical){
+            clampHorizontalPos();
+        }else{
+            clampVertical();
+        }
+    }
 
+    public void clampSlantedDirectionToggle(){
 
+        if(isClampVertical){
+            clampHorizontalSlanted();
+        }else{
+            clampVerticalSlanted();
+        }
     }
 /////////////////////////////////////////////////////////////////////////////
 
@@ -332,7 +421,7 @@ public class Utility13702 {
 
     public void clampOpenHorizontal(){
 
-        clampHorizotalSlanted();
+        clampHorizontalSlanted();
         openClampPos();
 
         myOpMode.telemetry.addLine("open horizontal position");
@@ -343,18 +432,19 @@ public class Utility13702 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void spinIntake(){
 
-        myOpMode.telemetry.addLine("start intake wheels");
-        myOpMode.telemetry.update();
-
         //spin both intake motors
         leftIntake.setPower(0.95);
         rightIntake.setPower(0.95);
     }
 
-    public void stopIntake(){
+    public void reverseIntake(){
 
-        myOpMode.telemetry.addLine("stop intake wheels");
-        myOpMode.telemetry.update();
+        //spin both intake motors
+        leftIntake.setPower(-0.95);
+        rightIntake.setPower(-0.95);
+    }
+
+    public void stopIntake(){
 
         //stops both intake motors
         leftIntake.setPower(0);
@@ -364,17 +454,25 @@ public class Utility13702 {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void closeGrabber(){
+        grabberOpen = false;
+
         grabberServo.setPosition(GRABBER_CLOSED_POSITION);
 
-        myOpMode.telemetry.addLine("foudation grabber servo closing");
-        myOpMode.telemetry.update();
     }
 
     public void openGrabber(){
+        grabberOpen = true;
+
         grabberServo.setPosition(GRABBER_OPEN_POSITION);
 
-        myOpMode.telemetry.addLine("foudation grabber servo opening");
-        myOpMode.telemetry.update();
+    }
+
+    public void toggleGrabber(){
+        if(grabberOpen){
+            closeGrabber();
+        }else{
+            openGrabber();
+        }
     }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -426,8 +524,6 @@ public class Utility13702 {
                 leftIntakeServo.setPosition(leftIntakeServoCurr);
 
         }
-
-
-
     }
+
 }

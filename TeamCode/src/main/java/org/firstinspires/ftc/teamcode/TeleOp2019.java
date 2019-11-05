@@ -40,8 +40,14 @@ public class TeleOp2019 extends LinearOpMode {
     double power3;
     double max;
 
-    boolean prevY = false;
-    boolean currY;
+    boolean prevy1 = false;
+    boolean curry1;
+
+    boolean prevb1 = false;
+    boolean currb1;
+
+    boolean prevx1 = false;
+    boolean currx1;
 
     boolean currdpadLeft;
     boolean prevdpadLeft = false;
@@ -58,8 +64,16 @@ public class TeleOp2019 extends LinearOpMode {
     boolean curra2;
     boolean preva2 = false;
 
+    boolean isClampOpen = false;
+
+    double clampCurr;
+
+    boolean clampMoveDone = false;
+
+    int liftTarget = 0;
+
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
-    Utility13702       U = new Utility13702();
+    Utility13702 U = new Utility13702();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -122,92 +136,112 @@ public class TeleOp2019 extends LinearOpMode {
 ////////////////////////////////////////////////////////////////////////////
 
             curra2 = gamepad2.a;
-            if(curra2 && curra2 != preva2){
-                U.clampVertical();
+
+            if (curra2 && curra2 != preva2) {
+                if (isClampOpen == false) {
+                    U.clampDirectionToggle();
+                } else {
+                    U.clampSlantedDirectionToggle();
+                }
             }
             preva2 = curra2;
 
 
-
-            if(gamepad2.x != prevx2){
+            if (gamepad2.x != prevx2) {
                 U.openClampPos();
-            }else{
+
+                isClampOpen = true;
+                clampMoveDone = false;
+
+                if (clampMoveDone == false) {
+                    if (U.isClampVertical){
+                        U.clampVerticalSlanted();
+                    }
+                    }else if(U.isClampVertical == false){
+                        U.clampHorizontalSlanted();
+                    }
+                clampMoveDone = true;
+
+            } else {
                 U.closeClampPos();
-            }
-            prevx2 = currx2;
 
-            if(gamepad2.y) {
-                U.clampClosedHorizontal();
-            }
+                isClampOpen = false;
+                clampMoveDone = false;
 
-            U.moveLift(gamepad2.left_stick_y);
+                if (clampMoveDone == false) {
+                    if (U.isClampVertical){
+                        U.clampVertical();
+                    }
+                }else if(U.isClampVertical == false){
+                    U.clampHorizontalPos();
+                }
+                clampMoveDone = true;
+
+
+            }
+            clampMoveDone = false;
+
+            U.moveLiftEncoder(gamepad2.left_stick_y);
+            //telemetry.addData("pos",U.liftMotor.getCurrentPosition());
+            //telemetry.addData("target: ", U.liftTarget);
 
             U.moveArm(gamepad2.right_stick_y);
+
 ////////////////////////////////////////////////////////////////////////////////////////
-            if(gamepad1.y != prevY){
+            if (gamepad1.y != prevy1) {
                 U.spinIntake();
-            }else{
+            } else {
                 U.stopIntake();
             }
-                prevY = currY;
+            prevy1 = curry1;
 
-          curra1 = gamepad1.a;
-            if(curra1 && curra1 != preva1){
+
+            if (gamepad1.b != prevb1) {
+                U.reverseIntake();
+            } else {
+                U.stopIntake();
+            }
+            prevb1 = currb1;
+
+
+            curra1 = gamepad1.a;
+            if (curra1 && curra1 != preva1) {
                 U.toggleRightIntakeServo();
             }
             preva1 = curra1;
 
-            if(gamepad1.b){
-                U.closeGrabber();
-            }
 
-            if(gamepad1.x){
-                U.openGrabber();
+            currx1 = gamepad1.x;
+            if (currx1 && currx1 != prevx1) {
+                U.toggleGrabber();
             }
+            prevx1 = currx1;
 
 
             currdpadLeft = gamepad1.dpad_left;
-                if(currdpadLeft && currdpadLeft != prevdpadLeft){
-                    U.moveLeftIntakeServo(true);
-                }
-                prevdpadLeft = currdpadLeft;
+            if (currdpadLeft && currdpadLeft != prevdpadLeft) {
+                U.moveLeftIntakeServo(true);
+            }
+            prevdpadLeft = currdpadLeft;
 
             currdpadRight = gamepad1.dpad_right;
-                if(currdpadRight && currdpadRight != prevdpadRight){
-                    U.moveLeftIntakeServo(false);
-                }
-                prevdpadRight = currdpadRight;
+            if (currdpadRight && currdpadRight != prevdpadRight) {
+                U.moveLeftIntakeServo(false);
+            }
+            prevdpadRight = currdpadRight;
 
             //------------------------------------------
             //-------------------------------------------
 
 
-
             // Update Telemetry
             telemetry.addData(">", "Press Stop to end test.");
 
-            if (gamepad1.a) {
-                telemetry.addLine("Button A is pressed on pad 1");
-            } else if (gamepad1.b) {
-                telemetry.addLine("Button B is pressed on pad 1");
-            } else {
-                telemetry.addLine("Neither button is pressed on pad 1");
-            }
+           // telemetry.addData("arm pos:", U.armMotor.getCurrentPosition());
 
-            if (gamepad2.a) {
-                telemetry.addLine("Button A is pressed on pad 2");
-            } else if (gamepad2.b) {
-                telemetry.addLine("Button B is pressed on pad 2");
-            } else {
-                telemetry.addLine("Neither button is pressed on pad 2");
-            }
 
             telemetry.update();
             idle();
-
-            telemetry.addLine();
-
-
 
 
         }//end while

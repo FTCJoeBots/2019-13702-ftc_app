@@ -481,6 +481,14 @@ public class HardwareJoeBot2019 {
 
     }
 
+    public void strafeSeconds(long milliSec, double power){
+
+        moveRobot(0, power, 0);
+        myOpMode.sleep(milliSec);
+        stop();
+    }
+
+
 }
 
 

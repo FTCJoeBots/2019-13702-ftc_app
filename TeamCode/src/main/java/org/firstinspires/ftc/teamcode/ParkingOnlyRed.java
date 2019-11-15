@@ -60,7 +60,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Parking Only Red", group="JoeBot")
+@Autonomous(name="Red Parking Skybridge", group="JoeBot")
 //@Disabled
 public class ParkingOnlyRed extends LinearOpMode {
 
@@ -73,10 +73,11 @@ public class ParkingOnlyRed extends LinearOpMode {
     public void runOpMode() {
 
         robot.init(hardwareMap,this);
+        waitForStart();
 
-        sleep(25000);
         robot.moveInches(2,.5,6);
-        robot.moveRobot(0,3,0);
+        robot.strafeSeconds(600,0.5);
+        robot.moveInches(15,0.5,10);
 
 
     }

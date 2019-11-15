@@ -72,12 +72,20 @@ public class Utility13702 {
     static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
 
     static final int LIFT_UP_POSITION = -2600;
-    static final int LIFT_DOWN_POSITION = 0;
+    static final int LIFT_DOWN_POSITION = 200 ;
+    static final int LIFT_DEFAULT_POSITION = -210;
 
     static final double ARM_THREADS_PER_INCH = 777;
     static final double ARM_GEAR_REDUCTION = 777;
     static final double ARM_COUNTS_PER_MOTOR_REV = 777;
     static final double ARM_COUNTS_PER_INCH = (ARM_THREADS_PER_INCH * ARM_GEAR_REDUCTION * ARM_COUNTS_PER_MOTOR_REV);
+
+    static final int ARM_IN_POSITION = 20;
+    static final int ARM_OUT_POSITION = -4200;
+    static final int ARM_DEFAULT_POSITION = -750;
+    static final int ARM_AUTO_GRABBING = -3500;
+    static final int ARM_AUTO_PINCH = -2000;
+
 
 
     static final double CLAMP_OPEN_POSITION = 0.3;
@@ -94,8 +102,8 @@ public class Utility13702 {
     static final double RIGHT_INTAKE_SERVO_UP_POSITION = 0.25;
     static final double RIGHT_INTAKE_SERVO_DOWN_POSITION = 0.01;
 
-    static final double LEFT_INTAKE_SERVO_OUT_POSITION = 0.4;
-    static final double LEFT_INTAKE_SERVO_IN_POSITION = 0.9;
+    static final double LEFT_INTAKE_SERVO_OUT_POSITION = 0.85;
+    static final double LEFT_INTAKE_SERVO_IN_POSITION = 0.35;
 
     double leftIntakeServoCurr = LEFT_INTAKE_SERVO_IN_POSITION;
 
@@ -145,7 +153,7 @@ public class Utility13702 {
         rightIntake.setPower(0);
 
         clampServo.setPosition(CLAMP_CLOSED_POSITION);
-        rotClampServo.setPosition(CLAMP_VERTICAL_POSITION);
+        rotClampServo.setPosition(0.15);
         leftIntakeServo.setPosition(LEFT_INTAKE_SERVO_IN_POSITION);
         rightIntakeServo.setPosition(RIGHT_INTAKE_SERVO_UP_POSITION);
         grabberServo.setPosition(GRABBER_OPEN_POSITION);
@@ -161,7 +169,7 @@ public class Utility13702 {
         // May want to switch to  RUN_USING_ENCODERS during autonomous
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         liftMotor.setTargetPosition(0);
-        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
        // armMotor.setTargetPosition(0);
         leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -227,14 +235,12 @@ public class Utility13702 {
         }
     }
 
-    public void moveLift(double power){
-        liftMotor.setPower(power);
-    }
 
-    public void moveLiftEncoder (double stickPos){
+
+    public void moveLiftStick (double stickPos){
         //myOpMode.telemetry.addData("stick",stickPos);
         if(stickPos < -0.2){
-            if(liftTarget > -2600){
+            if(liftTarget > -2900){
                 liftTarget = liftMotor.getCurrentPosition() - 80;
                 //myOpMode.telemetry.addData("LiftTarget",liftTarget);
             }
@@ -249,6 +255,8 @@ public class Utility13702 {
         if(stickPos > 0.2){
             if(liftTarget < 0) {
                 liftTarget = liftMotor.getCurrentPosition() + 80;
+            }else{
+                liftTarget = LIFT_DOWN_POSITION;
             }
 
             liftMotor.setTargetPosition(liftTarget);
@@ -261,6 +269,11 @@ public class Utility13702 {
 
     }
 
+    public void moveLiftEncoder(int liftEncoder){
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftMotor.setPower(0.25);
+        liftMotor.setTargetPosition(liftEncoder);
+    }
 
     public void armMotorInches(double inches, double power) {
 
@@ -289,38 +302,17 @@ public class Utility13702 {
         }
     }
 
-   /* public void moveArmEncoder (double stickPos){
-        //myOpMode.telemetry.addData("stick",stickPos);
-        if(stickPos < -0.2){
-            if(armTarget > 0){
-                armTarget = armMotor.getCurrentPosition() + 75;
-            }
-            armMotor.setTargetPosition(armTarget);
+    public void moveArmEncoder(int armEncoder){
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower(0.25);
+        armMotor.setTargetPosition(armEncoder);
+    }
 
-            armMotor.setPower(0.75);
 
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        }
-
-        if(stickPos > 0.2){
-            if(armTarget < 2000) {
-                armTarget = armMotor.getCurrentPosition() - 75;
-            }
-
-            armMotor.setTargetPosition(armTarget);
-
-            armMotor.setPower(0.75);
-
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        }
-
-    }*/
-
-    public void moveArm(double power){
+    public void moveArm(double power) {
             armMotor.setPower(power);
     }
+
 
 /////////////////////////////////////////////////////////////////////////////
     public void openClampPos(){
@@ -503,6 +495,7 @@ public class Utility13702 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void leftIntakeServoIn(){
+
         leftIntakeServo.setPosition(LEFT_INTAKE_SERVO_IN_POSITION);
     }
 
@@ -512,13 +505,13 @@ public class Utility13702 {
 
     public void moveLeftIntakeServo(boolean direction){
         //true = left, false = right
-        if(leftIntakeServoCurr < LEFT_INTAKE_SERVO_IN_POSITION || leftIntakeServoCurr > LEFT_INTAKE_SERVO_OUT_POSITION){
+       // if(leftIntakeServoCurr < LEFT_INTAKE_SERVO_IN_POSITION || leftIntakeServoCurr > LEFT_INTAKE_SERVO_OUT_POSITION){
             if(direction) {
 
-                leftIntakeServoCurr = leftIntakeServoCurr - 0.1;
+                leftIntakeServoCurr = leftIntakeServoCurr + 0.1;
             }else{
 
-                leftIntakeServoCurr = leftIntakeServoCurr + 0.1;
+                leftIntakeServoCurr = leftIntakeServoCurr - 0.1;
             }
 
                 leftIntakeServo.setPosition(leftIntakeServoCurr);
@@ -526,4 +519,3 @@ public class Utility13702 {
         }
     }
 
-}

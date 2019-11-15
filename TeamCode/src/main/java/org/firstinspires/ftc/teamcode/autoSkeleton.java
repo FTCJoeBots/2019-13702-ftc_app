@@ -40,7 +40,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="Sample 2", group="Pushbot")
+@Autonomous(name="Strafe Test", group="Pushbot")
 @Disabled
 public class autoSkeleton extends LinearOpMode {
 
@@ -60,6 +60,10 @@ public class autoSkeleton extends LinearOpMode {
         robot.init(hardwareMap,this);
 
         waitForStart();
+
+        robot.strafeSeconds(1000, -.5);
+        sleep(500);
+        robot.resetDegrees(0.75);
 
         telemetry.addLine("We're done. Press stop.");
         telemetry.update();

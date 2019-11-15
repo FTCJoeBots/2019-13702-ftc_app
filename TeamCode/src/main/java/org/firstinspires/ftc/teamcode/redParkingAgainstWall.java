@@ -34,54 +34,53 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * This is sample code used to explain how to write an autonomous code
+ * This file illustrates the concept of driving a path based on enhb coder counts.
+ * It uses the common Pushbot hardware class to define the drive on the robot.
+ * The code is structured as a LinearOpMode
  *
+ * The code REQUIRES that you DO have encoders on the wheels,
+ *   otherwise you would use: PushbotAutoDriveByTime;
+ *
+ *  This code ALSO requires that the drive Motors have been configured such that a positive
+ *  power command moves them forwards, and causes the encoders to count UP.
+ *
+ *   The desired path in this example is:
+ *   - Drive forward for 48 inches
+ *   - Spin right for 12 Inches
+ *   - Drive Backwards for 24 inches
+ *   - Stop and close the claw.
+ *
+ *  The code is written using a method called: encoderDrive(speed, leftInches, rightInches, timeoutS)
+ *  that performs the actual movement.
+ *  This methods assumes that each movement is relative to the last stopping place.
+ *  There are other ways to perform encoder based moves, but this method is probably the simplest.
+ *  This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run profile
+ *
+ * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Blue Foundation", group="Pushbot")
+@Autonomous(name="Red Park against Wall", group="JoeBot")
 //@Disabled
-public class blueFoundationParking extends LinearOpMode {
+public class redParkingAgainstWall extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
-    Utility13702      U   = new Utility13702();
-    Image_Recognition    V = new Image_Recognition();
-    private ElapsedTime     runtime = new ElapsedTime();
+    HardwareJoeBot2019 robot = new HardwareJoeBot2019();
+    private ElapsedTime runtime = new ElapsedTime();
 
 
     @Override
     public void runOpMode() {
 
-        telemetry.addLine("Press > to Start");
-        telemetry.update();
-
         robot.init(hardwareMap,this);
-        U.init(hardwareMap,this);
         waitForStart();
 
-        //move to foundation
-        robot.moveInches(39,0.25, 15);
-        sleep(1000);
-        robot.strafeSeconds(640,-0.7);
-        //grab foundation
-        U.closeGrabber();
-
-        sleep(1000);
-        //drive into building site
-        robot.moveInches(-90, 0.25,15);
-        robot.strafeSeconds(3000, 0.5);
-       // robot.moveInches(-10, 0.25, 10);
-
-        //release grabber
-        U.openGrabber();
-        sleep(1000);
-
-        //back up under skybridge
-        robot.moveInches(55,0.25,10);
-
-        telemetry.addLine("We're done. Press stop.");
-        telemetry.update();
+        robot.strafeSeconds(600, 0.5);
+        robot.moveInches(-5,.5,6);
 
     }
 
+
 }
+
+

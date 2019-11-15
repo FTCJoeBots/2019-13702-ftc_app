@@ -60,18 +60,18 @@ public class redFoundationParking extends LinearOpMode {
         waitForStart();
 
         //move to foundation
-        robot.moveInches(-35,0.25, 10);
+        robot.moveInches(-39,0.25, 10);
         sleep(1000);
         robot.strafeSeconds(640,-0.7);
 
         //grab foundation
         U.closeGrabber();
-
         sleep(1000);
+
         //drive into building site
         robot.moveInches(80, 0.25,15);
-        robot.strafeSeconds(500,0.5);
-        robot.moveInches(20, 0.25, 10);
+        robot.strafeSeconds(3000,0.5);
+       // robot.moveInches(20, 0.25, 10);
 
         //release grabber
         U.openGrabber();

@@ -347,7 +347,7 @@ public class HardwareJoeBot2019 {
      * @return Angle in degrees (+ left, - right)
      */
 
-    private double getAngle() {
+    public double getAngle() {
 
         // Grab the current IMU Angle reading
         Orientation currAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -478,6 +478,51 @@ public class HardwareJoeBot2019 {
         myOpMode.telemetry.addData("targetPower: ", targetPower);
         myOpMode.telemetry.update();
 
+
+    }
+
+    public void resetDegrees(double power) {
+
+        double currentHeading = getAngle();
+
+        double targetHeading = 0;
+
+        double error = targetHeading - currentHeading;
+
+        double closeEnough = 0.5;
+
+        double targetPower = 0;
+
+        double maxPower = power;
+
+        double minPower = .2;
+
+        while(myOpMode.opModeIsActive() && abs(error)>closeEnough){
+
+            if(abs(error) > 50) {
+                targetPower = maxPower;
+            } else if (abs(error) < 10) {
+                targetPower = minPower;
+            } else {
+                targetPower = (maxPower-minPower)/2;
+            }
+
+
+            moveRobot(0,0,targetPower);
+
+            currentHeading = getAngle();
+            error = targetHeading-currentHeading;
+
+            myOpMode.telemetry.addData("targetHeading: ", targetHeading);
+            myOpMode.telemetry.addData("currentHeading: ", currentHeading);
+            myOpMode.telemetry.addData("targetPower: ", targetPower);
+            myOpMode.telemetry.update();
+        }
+
+        myOpMode.telemetry.addData("targetHeading: ", targetHeading);
+        myOpMode.telemetry.addData("currentHeading: ", currentHeading);
+        myOpMode.telemetry.addData("targetPower: ", targetPower);
+        myOpMode.telemetry.update();
 
     }
 

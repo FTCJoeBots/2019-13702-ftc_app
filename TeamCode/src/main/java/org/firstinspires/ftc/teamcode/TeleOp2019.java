@@ -86,7 +86,6 @@ public class TeleOp2019 extends LinearOpMode {
         //start of loop
         while (opModeIsActive()) {
 
-
            /* telemetry.addData("rotClampServo:", U.rotClampServo.getPosition());
             telemetry.addData("ClampServo:", U.clampServo.getPosition());
             telemetry.update(); */
@@ -135,6 +134,15 @@ public class TeleOp2019 extends LinearOpMode {
 
 ////////////////////////////////////////////////////////////////////////////
 
+            while(gamepad2.y){
+               //arm motor position
+                U.moveArmEncoder(U.ARM_DEFAULT_POSITION);
+
+                //lift motor position
+                U.moveLiftEncoder(U.LIFT_DEFAULT_POSITION);
+            }
+
+
             curra2 = gamepad2.a;
 
             if (curra2 && curra2 != preva2) {
@@ -181,11 +189,18 @@ public class TeleOp2019 extends LinearOpMode {
             }
             clampMoveDone = false;
 
-            U.moveLiftEncoder(gamepad2.left_stick_y);
+            U.moveLiftStick(gamepad2.left_stick_y);
             //telemetry.addData("pos",U.liftMotor.getCurrentPosition());
             //telemetry.addData("target: ", U.liftTarget);
 
             U.moveArm(gamepad2.right_stick_y);
+
+            U.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            telemetry.addData("armpos",U.armMotor.getCurrentPosition());
+            telemetry.addData("armtarget: ", U.armTarget);
+
+            telemetry.addData("armpos",U.liftMotor.getCurrentPosition());
+            telemetry.addData("armtarget: ", U.liftTarget);
 
 ////////////////////////////////////////////////////////////////////////////////////////
             if (gamepad1.y != prevy1) {
@@ -237,11 +252,9 @@ public class TeleOp2019 extends LinearOpMode {
             // Update Telemetry
             telemetry.addData(">", "Press Stop to end test.");
 
-           // telemetry.addData("arm pos:", U.armMotor.getCurrentPosition());
-
-
             telemetry.update();
             idle();
+
 
 
         }//end while

@@ -30,7 +30,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -38,15 +40,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="Blue Foundation", group="Pushbot")
+@Autonomous(name="Blue Normal Stone", group="Pushbot")
 //@Disabled
-public class blueFoundationParking extends LinearOpMode {
+public class blueStoneParking extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
     Utility13702      U   = new Utility13702();
-    Image_Recognition    V = new Image_Recognition();
-    private ElapsedTime     runtime = new ElapsedTime();
 
 
     @Override
@@ -59,25 +59,40 @@ public class blueFoundationParking extends LinearOpMode {
         U.init(hardwareMap,this);
         waitForStart();
 
-        //move to foundation
-        robot.moveInches(39,0.25, 15);
-        sleep(1000);
-        robot.strafeSeconds(640,-0.7);
-        //grab foundation
-        U.closeGrabber();
+        //move all mechanisms out
+        U.leftIntakeServoOut();
+        sleep(300);
 
-        sleep(1000);
-        //drive into building site
-        robot.moveInches(-90, 0.25,15);
-        robot.strafeSeconds(3000, 0.5);
-       // robot.moveInches(-10, 0.25, 10);
 
-        //release grabber
-        U.openGrabber();
+        //move lift up
+        U.moveLiftEncoder(-900);
         sleep(1000);
 
-        //back up under skybridge
-        robot.moveInches(55,0.25,10);
+        //move arm out
+        U.moveArmEncoder(U.ARM_AUTO_GRABBING);
+        sleep(2500);
+
+        //robot.moveInches(15, 0.4,10);
+        //sleep(1000);
+
+        U.clampClosedHorizontal();
+        sleep(300);
+
+        U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+
+        sleep(1400);
+
+        U.moveArmEncoder(U.ARM_AUTO_PINCH);
+
+        telemetry.addLine("done");
+        telemetry.update();
+
+        sleep(5000 );
+
+
+
+        //move up to skystone
+
 
         telemetry.addLine("We're done. Press stop.");
         telemetry.update();

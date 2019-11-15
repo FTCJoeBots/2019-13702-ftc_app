@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -37,16 +38,22 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This is sample code used to explain how to write an autonomous code
  *
  */
+// Starting at the edge of the blue depot
 
-@Autonomous(name="Blue Foundation", group="Pushbot")
+@Autonomous(name="Blue skystone", group="Pushbot")
 //@Disabled
-public class blueFoundationParking extends LinearOpMode {
+public class blueVuforiaSkystone extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
-    Utility13702      U   = new Utility13702();
-    Image_Recognition    V = new Image_Recognition();
-    private ElapsedTime     runtime = new ElapsedTime();
+    HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    Utility13702 U = new Utility13702();
+    Image_Recognition I = new Image_Recognition();
+
+    double xValue;
+    double yValue;
+
+
+    private ElapsedTime runtime = new ElapsedTime();
 
 
     @Override
@@ -55,33 +62,61 @@ public class blueFoundationParking extends LinearOpMode {
         telemetry.addLine("Press > to Start");
         telemetry.update();
 
-        robot.init(hardwareMap,this);
-        U.init(hardwareMap,this);
+        robot.init(hardwareMap, this);
+        U.init(hardwareMap, this);
+        I.init(hardwareMap,this);
+
         waitForStart();
 
-        //move to foundation
-        robot.moveInches(39,0.25, 15);
-        sleep(1000);
-        robot.strafeSeconds(640,-0.7);
-        //grab foundation
-        U.closeGrabber();
+        double coords[] = I.skystone_cooridinates();
+        ///Distance from skystone
+        ///    coords[0]
+        //Amount off center of skystone
+        ///    coords[1]
 
-        sleep(1000);
-        //drive into building site
-        robot.moveInches(-90, 0.25,15);
-        robot.strafeSeconds(3000, 0.5);
-       // robot.moveInches(-10, 0.25, 10);
+        //drive to detect skystone
+        robot.moveInches(13,0.15,10);
+        robot.strafeSeconds(300, 0.5);
+        sleep(500);
 
-        //release grabber
-        U.openGrabber();
-        sleep(1000);
 
-        //back up under skybridge
-        robot.moveInches(55,0.25,10);
+        while (coords[0] == 777) {
+            robot.strafeSeconds(300, -0.4);
 
-        telemetry.addLine("We're done. Press stop.");
+            sleep(500);
+
+            coords = I.skystone_cooridinates();
+        }
+        telemetry.addData("done first while, sleep", coords[1]/22.4);
         telemetry.update();
 
-    }
+        robot.resetDegrees(0.50);
 
+        sleep(3000);
+        //found skystone, centering onto it
+
+        coords = I.skystone_cooridinates();
+            yValue = coords[1]/22.4;
+            xValue = coords[0]/22.4;
+
+            while(coords[1] < 5){
+                telemetry.addData("second while loop", coords[1]);
+                telemetry.update();
+
+                robot.resetDegrees(0.50);
+
+                robot.strafeSeconds(100,-0.3);
+
+                sleep(400);
+                coords = I.skystone_cooridinates();
+            }
+
+           /* U.closeClamp();
+            robot.moveInches(20, .5, 5);
+            robot.moveRobot(0, 27, 0);
+            U.grabBlock();*/
+
+
+
+    }
 }

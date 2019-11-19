@@ -70,7 +70,7 @@ public class blueStoneParking extends LinearOpMode {
 
         //move arm out
         U.moveArmEncoder(U.ARM_AUTO_GRABBING);
-        sleep(2500);
+        sleep(1500);
 
         //robot.moveInches(15, 0.4,10);
         //sleep(1000);
@@ -78,16 +78,50 @@ public class blueStoneParking extends LinearOpMode {
         U.clampClosedHorizontal();
         sleep(300);
 
-        U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+        robot.moveInches(22,0.28,10);
 
+        U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
         sleep(1400);
 
         U.moveArmEncoder(U.ARM_AUTO_PINCH);
+        sleep(750);
+
+        robot.moveInches(-20, 0.25, 10);
+
+        robot.strafeSeconds(1510, -0.28);
+        robot.moveInches(-25, 0.25, 10);
+
+        //move to foundation
+        robot.moveInches(39,0.25, 15);
+
+        robot.strafeSeconds(640,-0.7);
+
+        U.moveArmEncoder(U.ARM_OUT_POSITION);
+        U.moveLiftEncoder(U.LIFT_UP_POSITION);
+
+        sleep(1500);
+        //grab foundation
+        U.closeGrabber();
+
+        sleep(1000);
+        //drive into building site
+        U.moveLiftEncoder(U.LIFT_DEFAULT_POSITION);
+        U.moveArmEncoder(U.ARM_DEFAULT_POSITION);
+        robot.moveInches(-90, 0.25,15);
+
+        robot.strafeSeconds(1500, 0.5);
+
+        // robot.moveInches(-10, 0.25, 10);
+
+        //release grabber
+        U.openGrabber();
+        sleep(1000);
+
+        //back up under skybridge
+        robot.moveInches(55,0.25,10);
 
         telemetry.addLine("done");
         telemetry.update();
-
-        sleep(5000 );
 
 
 

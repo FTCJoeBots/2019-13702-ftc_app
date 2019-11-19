@@ -72,7 +72,7 @@ public class Utility13702 {
     static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
 
     static final int LIFT_UP_POSITION = -2600;
-    static final int LIFT_DOWN_POSITION = 200 ;
+    static final int LIFT_DOWN_POSITION = 150 ;
     static final int LIFT_DEFAULT_POSITION = -210;
 
     static final double ARM_THREADS_PER_INCH = 777;
@@ -80,11 +80,11 @@ public class Utility13702 {
     static final double ARM_COUNTS_PER_MOTOR_REV = 777;
     static final double ARM_COUNTS_PER_INCH = (ARM_THREADS_PER_INCH * ARM_GEAR_REDUCTION * ARM_COUNTS_PER_MOTOR_REV);
 
-    static final int ARM_IN_POSITION = 20;
-    static final int ARM_OUT_POSITION = -4200;
-    static final int ARM_DEFAULT_POSITION = -750;
-    static final int ARM_AUTO_GRABBING = -3500;
-    static final int ARM_AUTO_PINCH = -2000;
+    static final int ARM_IN_POSITION = 4200;
+    static final int ARM_OUT_POSITION = 20;
+    static final int ARM_DEFAULT_POSITION = 3700;
+    static final int ARM_AUTO_GRABBING = 100;
+    static final int ARM_AUTO_PINCH = 2170;
 
 
 
@@ -167,7 +167,7 @@ public class Utility13702 {
 
         // Set all drive motors to run without encoders.
         // May want to switch to  RUN_USING_ENCODERS during autonomous
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftMotor.setTargetPosition(0);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
        // armMotor.setTargetPosition(0);
@@ -270,9 +270,9 @@ public class Utility13702 {
     }
 
     public void moveLiftEncoder(int liftEncoder){
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         liftMotor.setPower(0.25);
         liftMotor.setTargetPosition(liftEncoder);
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void armMotorInches(double inches, double power) {
@@ -303,9 +303,10 @@ public class Utility13702 {
     }
 
     public void moveArmEncoder(int armEncoder){
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armMotor.setPower(0.25);
+
+        armMotor.setPower(0.5);
         armMotor.setTargetPosition(armEncoder);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
 

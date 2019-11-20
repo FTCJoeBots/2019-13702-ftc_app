@@ -526,6 +526,55 @@ public class HardwareJoeBot2019 {
 
     }
 
+    public void resetDegrees(double power) {
+
+        double currentHeading = getAngle();
+
+        double targetHeading = 0;
+
+        double error = targetHeading - currentHeading;
+
+        double closeEnough = 0.5;
+
+        double targetPower = 0;
+
+        double maxPower = -power;
+
+        double minPower = -.1;
+
+        while(myOpMode.opModeIsActive() && abs(error)>closeEnough){
+
+            if(abs(error) > 50) {
+                targetPower = maxPower;
+            } else if (abs(error) < 10) {
+                targetPower = minPower;
+            } else {
+                targetPower = -.05;
+            }
+            if(error < 0){
+                targetPower = -targetPower;
+            }
+
+            moveRobot(0,0,targetPower);
+
+            currentHeading = getAngle();
+            error = targetHeading-currentHeading;
+
+            myOpMode.telemetry.addData("targetHeading: ", targetHeading);
+            myOpMode.telemetry.addData("currentHeading: ", currentHeading);
+            myOpMode.telemetry.addData("targetPower: ", targetPower);
+            myOpMode.telemetry.update();
+        }
+
+        myOpMode.telemetry.addData("targetHeading: ", targetHeading);
+        myOpMode.telemetry.addData("currentHeading: ", currentHeading);
+        myOpMode.telemetry.addData("targetPower: ", targetPower);
+        myOpMode.telemetry.update();
+
+
+    }
+
+
 
     /////////////////////////////////     Added this method:
     ///    tflocate  -  look at the leftmost two minerals because we can't see all three

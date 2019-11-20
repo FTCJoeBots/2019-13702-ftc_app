@@ -85,6 +85,7 @@ public class blueVuforiaSkystone extends LinearOpMode {
 
             sleep(500);
 
+
             coords = I.skystone_cooridinates();
         }
         telemetry.addData("done first while, sleep", coords[1]/22.4);
@@ -101,6 +102,7 @@ public class blueVuforiaSkystone extends LinearOpMode {
                 telemetry.update();
 
                 robot.strafeSeconds(100,-0.25);
+                robot.resetDegrees(0.3);
 
                 sleep(400);
                 coords = I.skystone_cooridinates();

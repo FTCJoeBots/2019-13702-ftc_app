@@ -72,7 +72,7 @@ public class Utility13702 {
     static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
 
     static final int LIFT_UP_POSITION = -2600;
-    static final int LIFT_DOWN_POSITION = 150 ;
+    static final int LIFT_DOWN_POSITION = 100 ;
     static final int LIFT_DEFAULT_POSITION = -210;
 
     static final double ARM_THREADS_PER_INCH = 777;
@@ -80,11 +80,11 @@ public class Utility13702 {
     static final double ARM_COUNTS_PER_MOTOR_REV = 777;
     static final double ARM_COUNTS_PER_INCH = (ARM_THREADS_PER_INCH * ARM_GEAR_REDUCTION * ARM_COUNTS_PER_MOTOR_REV);
 
-    static final int ARM_IN_POSITION = 4200;
-    static final int ARM_OUT_POSITION = 20;
-    static final int ARM_DEFAULT_POSITION = 3700;
-    static final int ARM_AUTO_GRABBING = 100;
-    static final int ARM_AUTO_PINCH = 2170;
+    static final int ARM_IN_POSITION = 0;
+    static final int ARM_OUT_POSITION = -4250;
+    static final int ARM_DEFAULT_POSITION = -600;
+    static final int ARM_AUTO_GRABBING = -3860;
+    static final int ARM_AUTO_PINCH = -2100;
 
 
 

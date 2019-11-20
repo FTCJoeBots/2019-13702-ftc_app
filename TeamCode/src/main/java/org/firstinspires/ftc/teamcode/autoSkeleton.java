@@ -61,7 +61,8 @@ public class autoSkeleton extends LinearOpMode {
 
         waitForStart();
 
-        robot.rotateDegrees(90, 0.25);
+        robot.strafeSeconds(500,0.5);
+        robot.resetDegrees(0.15);
 
         telemetry.addLine("We're done. Press stop.");
         telemetry.update();

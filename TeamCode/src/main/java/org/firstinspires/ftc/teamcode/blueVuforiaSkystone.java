@@ -76,7 +76,7 @@ public class blueVuforiaSkystone extends LinearOpMode {
 
         //drive to detect skystone
         robot.moveInches(13,0.15,10);
-        robot.strafeSeconds(300, 0.25);
+        robot.strafeSeconds(600, 0.25);
         sleep(500);
 
 
@@ -85,30 +85,38 @@ public class blueVuforiaSkystone extends LinearOpMode {
 
             sleep(500);
 
-
             coords = I.skystone_cooridinates();
+
+            robot.resetDegrees(0.15);
         }
+
+        robot.resetDegrees(0.15);
         telemetry.addData("done first while, sleep", coords[1]/22.4);
         telemetry.update();
 
         //found skystone, centering onto it
-
+        robot.resetDegrees(0.15);
         coords = I.skystone_cooridinates();
             yValue = coords[1]/22.4;
             xValue = coords[0]/22.4;
 
-            while(coords[1] < 5){
+            while(coords[1] >5 && coords[1] < 7){
                 telemetry.addData("second while loop", coords[1]);
                 telemetry.update();
 
-                robot.strafeSeconds(100,-0.25);
-                robot.resetDegrees(0.3);
+                robot.strafeSeconds(50,-0.25);
 
-                sleep(400);
+                sleep(200);
                 coords = I.skystone_cooridinates();
+
+                robot.resetDegrees(0.1);
             }
 
-           /* U.closeClamp();
+            robot.moveInches(coords[0], 0.25, 0);
+
+
+/*
+            U.closeClamp();
             robot.moveInches(20, .5, 5);
             robot.moveRobot(0, 27, 0);
             U.grabBlock();*/

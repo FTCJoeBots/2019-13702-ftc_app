@@ -64,6 +64,12 @@ public class TeleOp2019 extends LinearOpMode {
     boolean curra2;
     boolean preva2 = false;
 
+    boolean currrbumper1;
+    boolean prevrbumper1 = false;
+
+    boolean currlbumper1;
+    boolean prevlbumper1 = false;
+
     boolean isClampOpen = false;
 
     double clampCurr;
@@ -86,51 +92,101 @@ public class TeleOp2019 extends LinearOpMode {
         //start of loop
         while (opModeIsActive()) {
 
+
+            if(gamepad1.right_bumper) {
            /* telemetry.addData("rotClampServo:", U.rotClampServo.getPosition());
             telemetry.addData("ClampServo:", U.clampServo.getPosition());
             telemetry.update(); */
 
-            //Drive Via "Analog Sticks" (Not Toggle)
-            //Set initial motion parameters to Gamepad1 Inputs
-            forward = -gamepad1.left_stick_y;
-            //right = gamepad1.left_stick_x;
-            right = -gamepad1.left_trigger + gamepad1.right_trigger;
-            clockwise = gamepad1.right_stick_x;
+                //Drive Via "Analog Sticks" (Not Toggle)
+                //Set initial motion parameters to Gamepad1 Inputs
+                forward = -gamepad1.left_stick_y;
+                //right = gamepad1.left_stick_x;
+                right = -gamepad1.left_trigger + gamepad1.right_trigger;
+                clockwise = gamepad1.right_stick_x;
 
-            // Add a tuning constant "K" to tune rotate axis sensitivity
-            k = .6;
-            clockwise = clockwise * k; //Make sure the "= Clockwise" is "= -clockwise"
+                // Add a tuning constant "K" to tune rotate axis sensitivity
+                k = .6;
+                clockwise = clockwise * k; //Make sure the "= Clockwise" is "= -clockwise"
 
 
-            // Calculate motor power
-            power0 = forward + clockwise + right;
-            power1 = forward - clockwise - right;
-            power2 = forward + clockwise - right;
-            power3 = forward - clockwise + right;
+                // Calculate motor power
+                power0 = 0.3 * (forward + clockwise + right);
+                power1 = 0.3 * (forward - clockwise - right);
+                power2 = 0.3 * (forward + clockwise - right);
+                power3 = 0.3 * (forward - clockwise + right);
 
-            // Normalize Wheel speeds so that no speed exceeds 1.0
-            max = Math.abs(power0);
-            if (Math.abs(power1) > max) {
-                max = Math.abs(power1);
+                // Normalize Wheel speeds so that no speed exceeds 1.0
+                max = Math.abs(power0);
+                if (Math.abs(power1) > max) {
+                    max = Math.abs(power1);
+                }
+                if (Math.abs(power2) > max) {
+                    max = Math.abs(power2);
+                }
+                if (Math.abs(power3) > max) {
+                    max = Math.abs(power3);
+                }
+
+                if (max > 1) {
+                    power0 /= max;
+                    power1 /= max;
+                    power2 /= max;
+                    power3 /= max;
+                }
+
+                robot.motor0.setPower(power0);
+                robot.motor1.setPower(power1);
+                robot.motor2.setPower(power2);
+                robot.motor3.setPower(power3);
+            } else {
+                /* telemetry.addData("rotClampServo:", U.rotClampServo.getPosition());
+            telemetry.addData("ClampServo:", U.clampServo.getPosition());
+            telemetry.update(); */
+
+                //Drive Via "Analog Sticks" (Not Toggle)
+                //Set initial motion parameters to Gamepad1 Inputs
+                forward = -gamepad1.left_stick_y;
+                //right = gamepad1.left_stick_x;
+                right = -gamepad1.left_trigger + gamepad1.right_trigger;
+                clockwise = gamepad1.right_stick_x;
+
+                // Add a tuning constant "K" to tune rotate axis sensitivity
+                k = .6;
+                clockwise = clockwise * k; //Make sure the "= Clockwise" is "= -clockwise"
+
+
+                // Calculate motor power
+                power0 = (forward + clockwise + right);
+                power1 = (forward - clockwise - right);
+                power2 = (forward + clockwise - right);
+                power3 = (forward - clockwise + right);
+
+                // Normalize Wheel speeds so that no speed exceeds 1.0
+                max = Math.abs(power0);
+                if (Math.abs(power1) > max) {
+                    max = Math.abs(power1);
+                }
+                if (Math.abs(power2) > max) {
+                    max = Math.abs(power2);
+                }
+                if (Math.abs(power3) > max) {
+                    max = Math.abs(power3);
+                }
+
+                if (max > 1) {
+                    power0 /= max;
+                    power1 /= max;
+                    power2 /= max;
+                    power3 /= max;
+                }
+
+                robot.motor0.setPower(power0);
+                robot.motor1.setPower(power1);
+                robot.motor2.setPower(power2);
+                robot.motor3.setPower(power3);
             }
-            if (Math.abs(power2) > max) {
-                max = Math.abs(power2);
-            }
-            if (Math.abs(power3) > max) {
-                max = Math.abs(power3);
-            }
 
-            if (max > 1) {
-                power0 /= max;
-                power1 /= max;
-                power2 /= max;
-                power3 /= max;
-            }
-
-            robot.motor0.setPower(power0);
-            robot.motor1.setPower(power1);
-            robot.motor2.setPower(power2);
-            robot.motor3.setPower(power3);
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -244,6 +300,11 @@ public class TeleOp2019 extends LinearOpMode {
                 U.moveLeftIntakeServo(false);
             }
             prevdpadRight = currdpadRight;
+
+            if(gamepad1.left_bumper){
+                U.leftIntakeServoOut();
+                U.leftIntakeServoCurr = U.LEFT_INTAKE_SERVO_OUT_POSITION;
+            }
 
             //------------------------------------------
             //-------------------------------------------

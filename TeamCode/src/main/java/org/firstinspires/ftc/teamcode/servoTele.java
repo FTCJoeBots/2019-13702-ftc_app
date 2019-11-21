@@ -30,7 +30,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class servoTele extends LinearOpMode {
 
 
-    double rightIntakePos=0.5;
+    double leftIntakePos=0.5;
 
 
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
@@ -50,16 +50,16 @@ public class servoTele extends LinearOpMode {
         while (opModeIsActive()) {
 
             if(gamepad1.dpad_right == true){
-                rightIntakePos += 0.05;
-                U.rightIntakeServo.setPosition(rightIntakePos);
+                leftIntakePos += 0.05;
+                U.leftIntakeServo.setPosition(leftIntakePos);
                 gamepad1.dpad_up=false;
                 sleep(1000);
 
             }
 
             if(gamepad1.dpad_left == true){
-                rightIntakePos -= 0.05;
-                U.rightIntakeServo.setPosition(rightIntakePos);
+                leftIntakePos -= 0.05;
+                U.leftIntakeServo.setPosition(leftIntakePos);
                 sleep(1000);
             }
 
@@ -90,7 +90,7 @@ public class servoTele extends LinearOpMode {
                 telemetry.addLine("Neither button is pressed on pad 2");
             }
 
-            telemetry.addData("right intake servo", rightIntakePos);
+            telemetry.addData("right intake servo", leftIntakePos);
             telemetry.update();
 
 

@@ -76,8 +76,8 @@ public class ParkingOnlyBlue extends LinearOpMode {
         waitForStart();
 
         robot.moveInches(2,.5,6);
-        robot.strafeSeconds(600,-0.5);
-        robot.moveInches(15,0.5,10);
+        robot.strafeSeconds(600,-0.25);
+        robot.moveInches(15,0.25,10);
 
 
     }

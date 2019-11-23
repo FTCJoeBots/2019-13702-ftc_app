@@ -111,10 +111,10 @@ public class TeleOp2019 extends LinearOpMode {
 
 
                 // Calculate motor power
-                power0 = 0.3 * (forward + clockwise + right);
-                power1 = 0.3 * (forward - clockwise - right);
-                power2 = 0.3 * (forward + clockwise - right);
-                power3 = 0.3 * (forward - clockwise + right);
+                power0 = 0.25 * (forward + clockwise + right);
+                power1 = 0.25 * (forward - clockwise - right);
+                power2 = 0.25 * (forward + clockwise - right);
+                power3 = 0.25 * (forward - clockwise + right);
 
                 // Normalize Wheel speeds so that no speed exceeds 1.0
                 max = Math.abs(power0);

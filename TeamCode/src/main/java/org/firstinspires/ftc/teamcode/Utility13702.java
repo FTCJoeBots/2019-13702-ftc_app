@@ -71,8 +71,8 @@ public class Utility13702 {
     static final double LIFT_COUNTS_PER_MOTOR_REV = 4.0;
     static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
 
-    static final int LIFT_UP_POSITION = -2600;
-    static final int LIFT_DOWN_POSITION = 130 ;
+    static final int LIFT_UP_POSITION = -1548;
+    static final int LIFT_DOWN_POSITION = 50 ;
     static final int LIFT_DEFAULT_POSITION = -240;
 
     static final double ARM_THREADS_PER_INCH = 777;
@@ -80,11 +80,11 @@ public class Utility13702 {
     static final double ARM_COUNTS_PER_MOTOR_REV = 777;
     static final double ARM_COUNTS_PER_INCH = (ARM_THREADS_PER_INCH * ARM_GEAR_REDUCTION * ARM_COUNTS_PER_MOTOR_REV);
 
-    static final int ARM_IN_POSITION = -1080;
-    static final int ARM_OUT_POSITION = -5330;
-    static final int ARM_DEFAULT_POSITION = -1800;
-    static final int ARM_AUTO_GRABBING = -5150;
-    static final int ARM_AUTO_PINCH = -3370;
+    static final int ARM_IN_POSITION = 0;
+    static final int ARM_OUT_POSITION = -1045;
+    static final int ARM_DEFAULT_POSITION = 2510;
+    static final int ARM_AUTO_GRABBING = -800;
+    static final int ARM_AUTO_PINCH = 1050;
 
 
 
@@ -167,8 +167,10 @@ public class Utility13702 {
 
         // Set all drive motors to run without encoders.
         // May want to switch to  RUN_USING_ENCODERS during autonomous
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftMotor.setTargetPosition(0);
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
        // armMotor.setTargetPosition(0);
         leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -235,6 +237,10 @@ public class Utility13702 {
         }
     }
 
+    public void moveLift(double power){
+        liftMotor.setPower(power);
+    }
+
 
 
     public void moveLiftStick (double stickPos){
@@ -255,15 +261,15 @@ public class Utility13702 {
         if(stickPos > 0.2){
             if(liftTarget < 0) {
                 liftTarget = liftMotor.getCurrentPosition() + 80;
-            }else{
-                liftTarget = LIFT_DOWN_POSITION;
+
+                liftMotor.setTargetPosition(liftTarget);
+
+                liftMotor.setPower(1);
+
+                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }else if(liftTarget == 0){
+                moveLift(stickPos);
             }
-
-            liftMotor.setTargetPosition(liftTarget);
-
-            liftMotor.setPower(1);
-
-            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         }
 

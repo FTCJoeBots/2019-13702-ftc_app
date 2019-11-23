@@ -81,10 +81,10 @@ public class Utility13702 {
     static final double ARM_COUNTS_PER_INCH = (ARM_THREADS_PER_INCH * ARM_GEAR_REDUCTION * ARM_COUNTS_PER_MOTOR_REV);
 
     static final int ARM_IN_POSITION = 0;
-    static final int ARM_OUT_POSITION = -1045;
-    static final int ARM_DEFAULT_POSITION = 2510;
-    static final int ARM_AUTO_GRABBING = -800;
-    static final int ARM_AUTO_PINCH = 1050;
+    static final int ARM_OUT_POSITION = 0;
+    static final int ARM_DEFAULT_POSITION = 0;
+    static final int ARM_AUTO_GRABBING = 0;
+    static final int ARM_AUTO_PINCH = 0;
 
 
 

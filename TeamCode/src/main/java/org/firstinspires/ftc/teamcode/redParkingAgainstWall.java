@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * This file illustrates the concept of driving a path based on encoder counts.
+ * This file illustrates the concept of driving a path based on enhb coder counts.
  * It uses the common Pushbot hardware class to define the drive on the robot.
  * The code is structured as a LinearOpMode
  *
@@ -60,37 +60,23 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="MariahAutoTurningTest", group="JoeBot")
+@Autonomous(name="Red Park against Wall", group="JoeBot")
 //@Disabled
-public class mariahAutoTurningTest extends LinearOpMode {
+public class redParkingAgainstWall extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
     private ElapsedTime runtime = new ElapsedTime();
 
 
-
-
     @Override
     public void runOpMode() {
 
         robot.init(hardwareMap,this);
-
-       // int newDistance = robot.motor0.getCurrentPosition();
-       // robot.motor0.setTargetPosition(newDistance + 5);
-
-       // robot.motor0.getCurrentPosition();
-
         waitForStart();
 
-
-
-        robot.rotateDegrees(90,.5);
-        robot.moveInches(25,1,9);
-        robot.rotateDegrees(180,.5);
-
-
-
+        robot.strafeSeconds(600, 0.5);
+        robot.moveInches(-5,.5,6);
 
     }
 

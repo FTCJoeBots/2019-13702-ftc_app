@@ -35,72 +35,108 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
-
 /**
- * This file illustrates the concept of driving a path based on encoder counts.
- * It uses the common Pushbot hardware class to define the drive on the robot.
- * The code is structured as a LinearOpMode
+ * This is sample code used to explain how to write an autonomous code
  *
- * The code REQUIRES that you DO have encoders on the wheels,
- *   otherwise you would use: PushbotAutoDriveByTime;
- *
- *  This code ALSO requires that the drive Motors have been configured such that a positive
- *  power command moves them forwards, and causes the encoders to count UP.
- *
- *   The desired path in this example is:
- *   - Drive forward for 48 inches
- *   - Spin right for 12 Inches
- *   - Drive Backwards for 24 inches
- *   - Stop and close the claw.
- *
- *  The code is written using a method called: encoderDrive(speed, leftInches, rightInches, timeoutS)
- *  that performs the actual movement.
- *  This methods assumes that each movement is relative to the last stopping place.
- *  There are other ways to perform encoder based moves, but this method is probably the simplest.
- *  This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run profile
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="MariahAutoTest", group="JoeBot")
+@Autonomous(name="Blue Normal Stone", group="Pushbot")
 //@Disabled
-public class mariahAuto1 extends LinearOpMode {
+public class blueStoneParking extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2019 robot = new HardwareJoeBot2019();
-    private ElapsedTime runtime = new ElapsedTime();
+    HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    Utility13702      U   = new Utility13702();
 
 
     @Override
     public void runOpMode() {
 
+        telemetry.addLine("Press > to Start");
+        telemetry.update();
+
         robot.init(hardwareMap,this);
-
-       // int newDistance = robot.motor0.getCurrentPosition();
-       // robot.motor0.setTargetPosition(newDistance + 5);
-
-       // robot.motor0.getCurrentPosition();
-
+        U.init(hardwareMap,this);
         waitForStart();
 
+        //move all mechanisms out
+        U.leftIntakeServoOut();
+        sleep(300);
+
+
+        //move lift up
+        U.moveLiftEncoder(-900);
+        sleep(1000);
+
+        //move arm out
+        U.moveArmEncoder(U.ARM_AUTO_GRABBING);
+        sleep(1500);
+
+        //robot.moveInches(15, 0.4,10);
+        //sleep(1000);
+
+        U.clampClosedHorizontal();
+        sleep(300);
+
+        robot.moveInches(24,0.28,10);
+
+        U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+        sleep(1400);
+
+        U.moveArmEncoder(U.ARM_AUTO_PINCH);
+        sleep(1000);
+
+        robot.moveInches(-17, -.25,10);
+        robot.strafeSeconds(1700, -0.25);
+        robot.resetDegrees(0.15);
+
+        //move to foundation
+        robot.moveInches(23,0.25, 15);
+
+        robot.strafeSeconds(640,-0.7);
+
+        U.moveArmEncoder(U.ARM_OUT_POSITION);
+        U.moveLiftEncoder(U.LIFT_UP_POSITION);
+
+        sleep(1500);
+        //grab foundation
+        U.closeGrabber();
+
+        sleep(1000);
+        //drive into building site
+        U.clampVertical();
+        U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+        U.moveArmEncoder(U.ARM_IN_POSITION);
+        robot.moveInches(-90, 0.25,15);
+
+        robot.strafeSeconds(1500, 0.5);
+
+        // robot.moveInches(-10, 0.25, 10);
+
+        //release grabber
+        U.openGrabber();
+
+        sleep(1000);
+
+
+        //back up under skybridge
+        robot.moveInches(20,0.25,10);
+        robot.strafeSeconds(1000, 0.25);
+        robot.moveInches(25, 0.25, 10);
 
 
 
-        telemetry.addLine("move1 has started");
-
-        //move1
-
-        robot.moveInches(25,1,60);
+        telemetry.addLine("done");
+        telemetry.update();
 
 
 
+        //move up to skystone
 
+
+        telemetry.addLine("We're done. Press stop.");
+        telemetry.update();
 
     }
 
-
 }
-
-

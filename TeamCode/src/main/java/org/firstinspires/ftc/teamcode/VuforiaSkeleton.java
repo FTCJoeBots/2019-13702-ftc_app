@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -40,12 +39,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="Sample 2", group="Pushbot")
-//@Disabled
-public class autoDriveSample extends LinearOpMode {
+@Autonomous(name="Vuforia Skeleton", group="Pushbot")
+@Disabled
+public class VuforiaSkeleton extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2018      robot   = new HardwareJoeBot2018();   // Use a Pushbot's hardware
+    HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    Utility13702        Utility = new Utility13702();
+    Image_Recognition    V = new Image_Recognition();
     private ElapsedTime     runtime = new ElapsedTime();
 
 
@@ -56,16 +57,18 @@ public class autoDriveSample extends LinearOpMode {
         telemetry.update();
 
         robot.init(hardwareMap,this);
+        V.init(hardwareMap, this);
+
+        double coords[] = V.skystone_cooridinates();
 
         waitForStart();
-
-        //Move forward 12 inches
-
-        robot.moveInches(12, 0.5, 5);
+       //coords[0] is the distance from the image
+        // coords[1] is the distance left or right of the image
+        //you'll have to call skystone_coordinates() a few times
+        //   that'll return 777 if it doesn't see anything
 
         telemetry.addLine("We're done. Press stop.");
         telemetry.update();
-
 
 
     }

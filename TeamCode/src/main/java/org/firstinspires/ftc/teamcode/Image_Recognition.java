@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -77,9 +78,10 @@ public class Image_Recognition {
     private static final float mmPerInch = 25.4f;
 
     private static final float stoneZ = 2.00f * mmPerInch;
+    WebcamName webcamName = null;
 
     final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
-    final boolean PHONE_IS_PORTRAIT = true;
+    final boolean PHONE_IS_PORTRAIT = false;
 
 
     final String VUFORIA_KEY =
@@ -94,7 +96,11 @@ public class Image_Recognition {
     float phoneYRotate = 0;
     float phoneZRotate = 0;
 
+
+
     public void init(HardwareMap ahwMap, LinearOpMode opMode) {
+
+        webcamName = ahwMap.get(WebcamName.class, "Webcam1");
 
         opMode.telemetry.addLine("Starting init");
         opMode.telemetry.update();
@@ -102,8 +108,12 @@ public class Image_Recognition {
         int cameraMonitorViewId = ahwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", ahwMap.appContext.getPackageName());
         parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraName = webcamName;
         parameters.cameraDirection = CAMERA_CHOICE;
-        parameters.useExtendedTracking = true;
+        parameters.useExtendedTracking = false;
+
+        myOpMode.telemetry.addLine("About to initialize vuforia");
+        myOpMode.telemetry.update();
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
         myOpMode.telemetry.addLine("defining trackables");
         myOpMode.telemetry.update();

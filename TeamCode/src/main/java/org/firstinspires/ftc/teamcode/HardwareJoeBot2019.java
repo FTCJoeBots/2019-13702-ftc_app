@@ -50,7 +50,6 @@ public class HardwareJoeBot2019 {
     public DcMotor motor1 = null; // Right Front
     public DcMotor motor2 = null; // Left Rear
     public DcMotor motor3 = null; // Right Rear
-    public DcMotor liftMotor = null;
 
     // Declare Sensors
     public BNO055IMU imu;                  // The IMU sensor object
@@ -84,18 +83,12 @@ public class HardwareJoeBot2019 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    // Declare Static members for calculations
-    //static final double COUNTS_PER_MOTOR_REV    = 1120;
-    static final double COUNTS_PER_MOTOR_REV = 780;
-
+    static final double COUNTS_PER_MOTOR_REV = 383.6;
     static final double DRIVE_GEAR_REDUCTION = 1;
     static final double WHEEL_DIAMETER_INCHES = 4.0;
-    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.14159);
-    static final double LIFT_THREADS_PER_INCH = 0.948;
-    static final double LIFT_GEAR_REDUCTION = 1;
-    static final double LIFT_COUNTS_PER_MOTOR_REV = 4.0;
-    static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.14159);
+
+
     /* Constructor */
     public HardwareJoeBot2019() {
 
@@ -113,39 +106,30 @@ public class HardwareJoeBot2019 {
         motor1 = hwMap.dcMotor.get("motor1");
         motor2 = hwMap.dcMotor.get("motor2");
         motor3 = hwMap.dcMotor.get("motor3");
-        liftMotor = hwMap.dcMotor.get("liftMotor");
 
-        //liftBucketMotor = hwMap.dcMotor.get("liftBucketMotor");
-        //mainBucketMotor = hwMap.dcMotor.get("mainBucketMotor");
-        //intakeMotor = hwMap.dcMotor.get("intakeMotor");
+
 
         // Set Default Motor Directions
-        motor0.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        motor1.setDirection(DcMotor.Direction.FORWARD); // Set to FORWARD if using AndyMark motors
-        motor2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        motor3.setDirection(DcMotor.Direction.FORWARD); // Set to FORWARD if using AndyMark motors
-        liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
+        motor0.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        motor1.setDirection(DcMotor.Direction.REVERSE); // Set to FORWARD if using AndyMark motors
+        motor2.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        motor3.setDirection(DcMotor.Direction.REVERSE); // Set to FORWARD if using AndyMark motors
+
 
         // Set all motors to zero power
         motor0.setPower(0);
         motor1.setPower(0);
         motor2.setPower(0);
         motor3.setPower(0);
-        liftMotor.setPower(0);
+
+
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
 
-        myOpMode.telemetry.addLine("initialized other motor power to zero");
-        myOpMode.telemetry.update();
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
-        // Set all drive motors to run without encoders.
-        // May want to switch to  RUN_USING_ENCODERS during autonomous
-        motor0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // IMU Initializaiton
         // Set up the parameters with which we will use our IMU. Note that integration
@@ -167,12 +151,12 @@ public class HardwareJoeBot2019 {
 
         //////////////////////////////////  INITIALIZE VUFORIA AND TENSOR FLOW OBJECT DETECTOR
         //initialize vuforia here because vuforia takes a while to init
-        initVuforia();
-        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
-            initTfod();
-        } else {
-            myOpMode.telemetry.addData("Sorry!", "This device is not compatible with TFOD");
-        }
+        //initVuforia();
+        //if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
+        //    initTfod();
+        //} else {
+        //    myOpMode.telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+        //}
         ////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -362,7 +346,7 @@ public class HardwareJoeBot2019 {
             myOpMode.telemetry.log().add("Ending moveInches method");
 
             // Set the motors back to standard mode
-            setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }
 
@@ -506,9 +490,9 @@ public class HardwareJoeBot2019 {
 
         double targetPower = 0;
 
-        double maxPower = power;
+        double maxPower = -power;
 
-        double minPower = .1;
+        double minPower = -.1;
 
         while(myOpMode.opModeIsActive() && abs(error)>closeEnough){
 
@@ -541,6 +525,55 @@ public class HardwareJoeBot2019 {
 
 
     }
+
+    public void resetDegrees(double power) {
+
+        double currentHeading = getAngle();
+
+        double targetHeading = 0;
+
+        double error = targetHeading - currentHeading;
+
+        double closeEnough = 0.5;
+
+        double targetPower = 0;
+
+        double maxPower = -power;
+
+        double minPower = -.1;
+
+        while(myOpMode.opModeIsActive() && abs(error)>closeEnough){
+
+            if(abs(error) > 50) {
+                targetPower = maxPower;
+            } else if (abs(error) < 10) {
+                targetPower = minPower;
+            } else {
+                targetPower = -.05;
+            }
+            if(error < 0){
+                targetPower = -targetPower;
+            }
+
+            moveRobot(0,0,targetPower);
+
+            currentHeading = getAngle();
+            error = targetHeading-currentHeading;
+
+            myOpMode.telemetry.addData("targetHeading: ", targetHeading);
+            myOpMode.telemetry.addData("currentHeading: ", currentHeading);
+            myOpMode.telemetry.addData("targetPower: ", targetPower);
+            myOpMode.telemetry.update();
+        }
+
+        myOpMode.telemetry.addData("targetHeading: ", targetHeading);
+        myOpMode.telemetry.addData("currentHeading: ", currentHeading);
+        myOpMode.telemetry.addData("targetPower: ", targetPower);
+        myOpMode.telemetry.update();
+
+
+    }
+
 
 
     /////////////////////////////////     Added this method:
@@ -651,34 +684,18 @@ public class HardwareJoeBot2019 {
 
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
     }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void liftMotorInches(double inches, double power){
-
-        // Declare needed variables
-        int newliftMotorTarget;
-
-
-        // Check to make sure the OpMode is still active; If it isn't don't run the method
-        if (myOpMode.opModeIsActive()) {
-
-            // Determine new target positions for each wheel
-            newliftMotorTarget = liftMotor.getCurrentPosition() + (int) (inches * LIFT_COUNTS_PER_INCH);
-
-            // Send target Positions to motors
-            liftMotor.setTargetPosition(newliftMotorTarget);
-
-            // Set Robot to RUN_TO_POSITION mode
-            setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // Reset the runtime
-            runtime.reset();
-
-            // Set the motors back to standard mode
-            setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        }
+    public void strafeSeconds(long milliSec, double power){
+        moveRobot(0,power,0);
+        myOpMode.sleep(milliSec);
+        stop();
     }
 }
+
+
+
+
+
 
 
 

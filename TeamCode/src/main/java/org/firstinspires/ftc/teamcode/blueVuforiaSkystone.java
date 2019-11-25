@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -37,14 +38,22 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This is sample code used to explain how to write an autonomous code
  *
  */
+// Starting at the edge of the blue depot
 
-@Autonomous(name="Sample 1", group="Pushbot")
+@Autonomous(name="Blue skystone", group="Pushbot")
 //@Disabled
-public class autoDriveSample2 extends LinearOpMode {
+public class blueVuforiaSkystone extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2018      robot   = new HardwareJoeBot2018();   // Use a Pushbot's hardware
-    private ElapsedTime     runtime = new ElapsedTime();
+    HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    Utility13702 U = new Utility13702();
+    Image_Recognition I = new Image_Recognition();
+
+    double xValue;
+    double yValue;
+
+
+    private ElapsedTime runtime = new ElapsedTime();
 
 
     @Override
@@ -53,21 +62,66 @@ public class autoDriveSample2 extends LinearOpMode {
         telemetry.addLine("Press > to Start");
         telemetry.update();
 
-        robot.init(hardwareMap,this);
+        robot.init(hardwareMap, this);
+        U.init(hardwareMap, this);
+        I.init(hardwareMap,this);
 
         waitForStart();
 
-        //Move forward 12 inches
+        double coords[] = I.skystone_cooridinates();
+        ///Distance from skystone
+        ///    coords[0]
+        //Amount off center of skystone
+        ///    coords[1]
 
-        robot.moveInches(12, 0.5, 5);
-        robot.rotate(90,.25);
+        //drive to detect skystone
+        robot.moveInches(13,0.15,10);
+        robot.strafeSeconds(600, 0.25);
+        sleep(500);
 
 
-        telemetry.addLine("We're done. Press stop.");
+        while (coords[0] == 777) {
+            robot.strafeSeconds(300, -0.25);
+
+            sleep(500);
+
+            coords = I.skystone_cooridinates();
+
+            robot.resetDegrees(0.15);
+        }
+
+        robot.resetDegrees(0.15);
+        telemetry.addData("done first while, sleep", coords[1]/22.4);
         telemetry.update();
+
+        //found skystone, centering onto it
+        robot.resetDegrees(0.15);
+        coords = I.skystone_cooridinates();
+            yValue = coords[1]/22.4;
+            xValue = coords[0]/22.4;
+
+            while(coords[1] >5 && coords[1] < 7){
+                telemetry.addData("second while loop", coords[1]);
+                telemetry.update();
+
+                robot.strafeSeconds(50,-0.25);
+
+                sleep(200);
+                coords = I.skystone_cooridinates();
+
+                robot.resetDegrees(0.1);
+            }
+
+            robot.moveInches(coords[0], 0.25, 0);
+
+
+/*
+            U.closeClamp();
+            robot.moveInches(20, .5, 5);
+            robot.moveRobot(0, 27, 0);
+            U.grabBlock();*/
 
 
 
     }
-
 }

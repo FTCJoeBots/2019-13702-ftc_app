@@ -60,5 +60,29 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
+@Autonomous(name="Blue Parking Skybridge", group="JoeBot")
+//@Disabled
+public class ParkingOnlyBlue extends LinearOpMode {
+
+    /* Declare OpMode members. */
+    HardwareJoeBot2019 robot = new HardwareJoeBot2019();
+    private ElapsedTime runtime = new ElapsedTime();
+
+
+    @Override
+    public void runOpMode() {
+
+        robot.init(hardwareMap,this);
+        waitForStart();
+
+        robot.moveInches(2,.5,6);
+        robot.strafeSeconds(600,-0.25);
+        robot.moveInches(15,0.25,10);
+
+
+    }
+
+
+}
 
 

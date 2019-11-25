@@ -85,7 +85,7 @@ public class Image_Recognition {
 
 
     final String VUFORIA_KEY =
-            "AVzCl0v/////AAAAGcfsmNB0+Ecxi9nnFUli4RtGGZORFTsrkrZTsSaEZcnHNkxhb5NbskfqT531gL1cmgLFZ5xxeICDdBlPxxEbD4JcUvUuIdXxpVesR7/EAFZ+DTSJT3YQb0sKm2SlOlfiMf7ZdCEUaXuymCZPB4JeoYdogDUOdsOrd0BTDV2Z+CtO3eSsHWfcY6bDLh8VJKSbeFdk533EzcA26uhfhwBxYlzbOsjPSVCB66P6GbIP9/UjI3lbTNi+tpCpnOZa2gwPjoTSeEjo9ZKtkPe3a/DpLq3OMnVwVnUmsDvoW++UbtOmg9WNFC/YkN7DCtMt91uPaJPL5vOERkA+uXliC1i44IT4EyfoN1ccLaJiXMFH63DE";
+            "AbHbHaL/////AAABmcpMhwIbJUQInBthtyhtOj1muLHL/yP72hHsIveD0T2LKfQLWlTCaVVTwR/aoGQC9qGr2u2hgvlLtpbwhhuVC+kCOh/C/qu6aWowrZH8CTC5ML1q4LnpcY374Kb80CEUK+jeOFzSOMWYcRuCjxwBxVxsUgGnPCN+mFlyyRPlcZgrh3SAys2XWmHFA+MkgSrHh6la3+GqzbA7LfKO65CJSdhtSFiWWvDnRDuVMV5CumryZDA2lEg9zuDnn+oHTeHb4nLHL2PDcWDexC20DWcrOeGQm47hf48GvF6dMlIUWk6cZZBQvzlSX4zKwqPXPwOCxqm31NtRAhfzKBM/fQyic24mWifHcZHvQoM2ytzUSUSq";
 
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia = null;

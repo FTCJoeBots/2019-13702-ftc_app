@@ -68,60 +68,98 @@ public class blueVuforiaSkystone extends LinearOpMode {
 
         waitForStart();
 
-        double coords[] = I.skystone_cooridinates();
-        ///Distance from skystone
-        ///    coords[0]
-        //Amount off center of skystone
-        ///    coords[1]
+        robot.moveInches(6.3, 0.42, 10);
+        sleep(300);
+        double skystonePos = I.SkystonePostion();
+        //telemetry.addData("Return value:  ",skystonePos);
+        //telemetry.update();
+        sleep(2500);
 
-        //drive to detect skystone
-        robot.moveInches(13,0.15,10);
-        robot.strafeSeconds(600, 0.25);
-        sleep(500);
+        if(skystonePos < 0){
+            telemetry.addLine("first skystone seen");
+            telemetry.update();
+            //move all mechanisms out
+            U.leftIntakeServoOut();
+            sleep(300);
 
 
-        while (coords[0] == 777) {
-            robot.strafeSeconds(300, -0.25);
+            //move lift up
+            U.moveLiftEncoder(-900);
+            sleep(300);
 
-            sleep(500);
+            //move arm out
+            U.moveArmEncoder(U.ARM_AUTO_GRABBING);
+            sleep(1500);
 
-            coords = I.skystone_cooridinates();
+            U.clampClosedHorizontal();
+            sleep(300);
 
+            robot.moveInches(14,0.28,10);
+
+            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+            sleep(1400);
+
+            U.moveArmEncoder(U.ARM_AUTO_PINCH);
+            sleep(1000);
+
+            robot.moveInches(-17, -.25,10);
+            robot.strafeSeconds(1700, -0.25);
             robot.resetDegrees(0.15);
+
+            //move to foundation
+            robot.moveInches(23,0.25, 15);
+
+            robot.strafeSeconds(640,-0.7);
+
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
+            U.moveLiftEncoder(U.LIFT_UP_POSITION);
+
+            sleep(1500);
+            //grab foundation
+            U.closeGrabber();
+
+            sleep(1000);
+            //drive into building site
+            U.clampVertical();
+            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+            U.moveArmEncoder(U.ARM_IN_POSITION);
+            robot.moveInches(-90, 0.25,15);
+
+            robot.strafeSeconds(1500, 0.5);
+
+            // robot.moveInches(-10, 0.25, 10);
+
+            //release grabber
+            U.openGrabber();
+
+            sleep(1000);
+
+
+            //back up under skybridge
+            robot.moveInches(20,0.25,10);
+            robot.strafeSeconds(1000, 0.25);
+            robot.moveInches(25, 0.25, 10);
+
+            robot.strafeSeconds(200, 0.25);
+
+
+        }else if(skystonePos > 0){
+            telemetry.addLine("second skystone seen");
+            telemetry.update();
+
+            U.closeGrabber();
+
+        }else{
+            telemetry.addLine("third skystone seen");
+            telemetry.update();
+
+            U.leftIntakeServoOut();
+            sleep(50000);
+
         }
 
-        robot.resetDegrees(0.15);
-        telemetry.addData("done first while, sleep", coords[1]/22.4);
+        telemetry.addData("skystone pos", skystonePos);
         telemetry.update();
-
-        //found skystone, centering onto it
-        robot.resetDegrees(0.15);
-        coords = I.skystone_cooridinates();
-            yValue = coords[1]/22.4;
-            xValue = coords[0]/22.4;
-
-            while(coords[1] >5 && coords[1] < 7){
-                telemetry.addData("second while loop", coords[1]);
-                telemetry.update();
-
-                robot.strafeSeconds(50,-0.25);
-
-                sleep(200);
-                coords = I.skystone_cooridinates();
-
-                robot.resetDegrees(0.1);
-            }
-
-            robot.moveInches(coords[0], 0.25, 0);
-
-
-/*
-            U.closeClamp();
-            robot.moveInches(20, .5, 5);
-            robot.moveRobot(0, 27, 0);
-            U.grabBlock();*/
-
-
 
     }
 }

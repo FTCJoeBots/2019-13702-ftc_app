@@ -121,7 +121,7 @@ public class blueStoneParking extends LinearOpMode {
 
         //back up under skybridge
         robot.moveInches(20,0.25,10);
-        robot.strafeSeconds(1000, 0.25);
+        robot.strafeSeconds(1400, -0.25);
         robot.moveInches(25, 0.25, 10);
 
 

@@ -71,9 +71,9 @@ public class Utility13702 {
     static final double LIFT_COUNTS_PER_MOTOR_REV = 4.0;
     static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
 
-    static final int LIFT_UP_POSITION = -1548;
-    static final int LIFT_DOWN_POSITION = 50 ;
-    static final int LIFT_DEFAULT_POSITION = -240;
+    static final int LIFT_UP_POSITION = -2915;
+    static final int LIFT_DOWN_POSITION = 10;
+    static final int LIFT_DEFAULT_POSITION = -330;
 
     static final double ARM_THREADS_PER_INCH = 777;
     static final double ARM_GEAR_REDUCTION = 777;
@@ -81,10 +81,10 @@ public class Utility13702 {
     static final double ARM_COUNTS_PER_INCH = (ARM_THREADS_PER_INCH * ARM_GEAR_REDUCTION * ARM_COUNTS_PER_MOTOR_REV);
 
     static final int ARM_IN_POSITION = 0;
-    static final int ARM_OUT_POSITION = 0;
-    static final int ARM_DEFAULT_POSITION = 0;
-    static final int ARM_AUTO_GRABBING = 0;
-    static final int ARM_AUTO_PINCH = 0;
+    static final int ARM_OUT_POSITION = -4225;
+    static final int ARM_DEFAULT_POSITION = -687;
+    static final int ARM_AUTO_GRABBING = -4100;
+    static final int ARM_AUTO_PINCH = -2180                                         ;
 
 
 
@@ -110,7 +110,6 @@ public class Utility13702 {
     boolean rightIntakeServoUp = true;
     boolean isClampVertical = true;
     boolean grabberOpen = true;
-
     int liftTarget = 0;
 
     int armTarget = 0;

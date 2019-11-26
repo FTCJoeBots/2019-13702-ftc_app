@@ -202,7 +202,7 @@ public class Image_Recognition {
                     }
                     break;
                 }
-            }
+            } 
             VectorF translation = lastLocation.getTranslation();
 
             myOpMode.telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f", translation.get(0), translation.get(1), translation.get(2));

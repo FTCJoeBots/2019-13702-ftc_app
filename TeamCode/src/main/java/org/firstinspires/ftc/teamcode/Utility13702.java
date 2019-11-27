@@ -102,8 +102,8 @@ public class Utility13702 {
     static final double RIGHT_INTAKE_SERVO_UP_POSITION = 0.25;
     static final double RIGHT_INTAKE_SERVO_DOWN_POSITION = 0.01;
 
-    static final double LEFT_INTAKE_SERVO_OUT_POSITION = 0.85;
-    static final double LEFT_INTAKE_SERVO_IN_POSITION = 0.35;
+    static final double LEFT_INTAKE_SERVO_OUT_POSITION = 0.7;
+    static final double LEFT_INTAKE_SERVO_IN_POSITION = 0.15;
 
     double leftIntakeServoCurr = LEFT_INTAKE_SERVO_IN_POSITION;
 

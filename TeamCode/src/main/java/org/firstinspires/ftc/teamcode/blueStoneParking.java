@@ -72,26 +72,35 @@ public class blueStoneParking extends LinearOpMode {
         U.moveArmEncoder(U.ARM_AUTO_GRABBING);
         sleep(1500);
 
-        //robot.moveInches(15, 0.4,10);
-        //sleep(1000);
-
         U.clampClosedHorizontal();
         sleep(300);
+
+
+       //FIRST SKYSTONE POS
 
         robot.moveInches(24,0.28,10);
 
         U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
-        sleep(1400);
+        sleep(500);
 
         U.moveArmEncoder(U.ARM_AUTO_PINCH);
-        sleep(1000);
+        sleep(900);
 
         robot.moveInches(-17, -.25,10);
         robot.strafeSeconds(1700, -0.25);
         robot.resetDegrees(0.15);
 
+
+
+        //SECOND SKYSTONE POS
+        //robot.strafeSeconds(300,-0.25);
+
+
+        //THIRD SKYSTONE POS
+
+
         //move to foundation
-        robot.moveInches(23,0.25, 15);
+        robot.moveInches(19,0.25, 15);
 
         robot.strafeSeconds(640,-0.7);
 
@@ -121,7 +130,7 @@ public class blueStoneParking extends LinearOpMode {
 
         //back up under skybridge
         robot.moveInches(20,0.25,10);
-        robot.strafeSeconds(1400, -0.25);
+        robot.strafeSeconds(1200, -0.25);
         robot.moveInches(25, 0.25, 10);
 
 

@@ -30,30 +30,20 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * This is sample code used to explain how to write an autonomous code
  *
  */
-// Starting at the edge of the blue depot
 
-@Autonomous(name="Blue skystone", group="Pushbot")
+@Autonomous(name="Red Normal Stone", group="Pushbot")
 //@Disabled
-public class blueVuforiaSkystone extends LinearOpMode {
+public class redStoneParking extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
-    Utility13702 U = new Utility13702();
-    Image_Recognition I = new Image_Recognition();
-
-    double xValue;
-    double yValue;
-
-
-    private ElapsedTime runtime = new ElapsedTime();
+    HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    Utility13702      U   = new Utility13702();
 
 
     @Override
@@ -62,14 +52,10 @@ public class blueVuforiaSkystone extends LinearOpMode {
         telemetry.addLine("Press > to Start");
         telemetry.update();
 
-        robot.init(hardwareMap, this);
-        U.init(hardwareMap, this);
-        I.init(hardwareMap,this);
-
+        robot.init(hardwareMap,this);
+        U.init(hardwareMap,this);
         waitForStart();
 
-        robot.moveInches(6.3, 0.42, 10);
-        sleep(300);
         //move all mechanisms out
         U.leftIntakeServoOut();
         sleep(300);
@@ -81,91 +67,56 @@ public class blueVuforiaSkystone extends LinearOpMode {
 
         //move arm out
         U.moveArmEncoder(U.ARM_AUTO_GRABBING);
-        sleep(1000);
+        sleep(1500);
 
         U.clampClosedHorizontal();
         sleep(300);
 
 
-        //variable for coordinates
-        double coords[] = {777,777};
+       //FIRST SKYSTONE POS
 
-        //loop over I.skystone coordiates a few times
-        int i = 0;
-        while (i < 25) {
-            coords = I.skystone_cooridinates();
-            i = i + 1;
-            sleep(80);
-        }
+        robot.moveInches(26,0.28,10);
 
-        //get the second coordinate
-        //coords[1];
-        // if the second coordinate is less than 0, position 1
-        //if it's greateer than 0, position 2
-        //if it's not found (777), position 3
+        U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+        sleep(500);
 
-        if(coords[1] < 0){
-            telemetry.addLine("first skystone seen");
-            telemetry.update();
+        U.moveArmEncoder(U.ARM_AUTO_PINCH);
+        sleep(900);
 
-            robot.moveInches(16,0.28,10);
-
-            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
-            sleep(500);
-
-            U.moveArmEncoder(U.ARM_AUTO_PINCH);
-            sleep(900);
-
-            robot.moveInches(-18, -.25,10);
-            robot.strafeSeconds(1700, -0.25);
-            robot.resetDegrees(0.15);
-
-            //move to foundation
-            robot.moveInches(20,0.4, 15);
-
-        }else if(coords[1] != 777){
-            telemetry.addLine("second skystone seen");
-            telemetry.update();
-
-            robot.strafeSeconds(500,0.25);
-            robot.resetDegrees(1.5);
-            robot.moveInches(13,0.28,10);
-
-            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
-            sleep(1400);
-
-            U.moveArmEncoder(U.ARM_AUTO_PINCH);
-            sleep(1000);
-
-            robot.moveInches(-16, -.25,10);
-            robot.strafeSeconds(2260, -0.25);
-            robot.resetDegrees(0.15);
-
-            //move to foundation
-            robot.moveInches(20, 0.5, 10);
-
-        }else{
-            telemetry.addLine("third skystone seen");
-            telemetry.update();
-
-        }
+        robot.moveInches(-16, .25,10);
+        robot.strafeSeconds(1800, 0.25);
+        robot.resetDegrees(0.15);
 
 
-        robot.strafeSeconds(300,-0.7);
 
+        //SECOND SKYSTONE POS
+      //  robot.strafeSeconds(300,0.25);
+
+
+        //THIRD SKYSTONE POS
+
+
+        //move to foundation
+
+        robot.moveInches(23,0.25, 15);
         U.moveArmEncoder(U.ARM_OUT_POSITION);
         U.moveLiftEncoder(U.LIFT_UP_POSITION);
 
         sleep(1500);
+
+        robot.rotateDegrees(180, 0.2);
+
+        robot.strafeSeconds(640,-0.7);
+
         //grab foundation
         U.closeGrabber();
 
-        sleep(500);
+        sleep(1000);
         //drive into building site
         U.clampVertical();
         U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
         U.moveArmEncoder(U.ARM_IN_POSITION);
-        robot.moveInches(-90, 0.25,15);
+        robot.moveInches(90, 0.25,15);
 
         robot.strafeSeconds(1500, 0.5);
 
@@ -174,13 +125,27 @@ public class blueVuforiaSkystone extends LinearOpMode {
         //release grabber
         U.openGrabber();
 
-        sleep(500);
+        sleep(1000);
 
 
         //back up under skybridge
-        robot.moveInches(20,0.25,10);
-        robot.strafeSeconds(1000, -0.25);
-        robot.moveInches(25, 0.25, 10);
+        robot.moveInches(20,-0.25,10);
+        robot.strafeSeconds(1400, -0.25);
+        robot.moveInches(25, -0.25, 10);
+
+
+
+        telemetry.addLine("done");
+        telemetry.update();
+
+
+
+        //move up to skystone
+
+
+        telemetry.addLine("We're done. Press stop.");
+        telemetry.update();
 
     }
+
 }

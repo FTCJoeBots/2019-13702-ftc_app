@@ -112,7 +112,7 @@ public class blueVuforiaSkystone extends LinearOpMode {
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
             sleep(500);
-
+ 
             U.moveArmEncoder(U.ARM_AUTO_PINCH);
             sleep(900);
 

@@ -90,7 +90,7 @@ public class servoTele extends LinearOpMode {
                 telemetry.addLine("Neither button is pressed on pad 2");
             }
 
-            telemetry.addData("right intake servo", leftIntakePos);
+            telemetry.addData("left intake servo", leftIntakePos);
             telemetry.update();
 
 

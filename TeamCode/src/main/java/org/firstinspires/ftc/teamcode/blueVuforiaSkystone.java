@@ -48,11 +48,6 @@ public class blueVuforiaSkystone extends LinearOpMode {
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
     Utility13702 U = new Utility13702();
     Image_Recognition I = new Image_Recognition();
-
-    double xValue;
-    double yValue;
-
-
     private ElapsedTime runtime = new ElapsedTime();
 
 
@@ -112,22 +107,20 @@ public class blueVuforiaSkystone extends LinearOpMode {
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
             sleep(500);
- 
+
             U.moveArmEncoder(U.ARM_AUTO_PINCH);
             sleep(900);
 
-            robot.moveInches(-15, -.27,10);
+            robot.moveInches(-12.5, -.27,10);
             robot.resetDegrees(0.15);
             //robot.strafeSeconds(1700, -0.25);
             //robot.resetDegrees(0.15);
             robot.rotateDegrees(-85,0.25);
-            robot.moveInches(21, 0.4, 10);
-            sleep(800);
-            robot.rotateDegrees(85, 0.25);
+            robot.moveInches(43, 0.25, 10);
+            robot.moveInches(-15, 0.25, 10);
 
-            //move to foundation
-            robot.moveInches(15,0.4, 15);
-            sleep(300);
+            robot.strafeSeconds(1000, 0.25);
+
 
         }else if(coords[1] != 777){
             telemetry.addLine("second skystone seen");
@@ -143,25 +136,23 @@ public class blueVuforiaSkystone extends LinearOpMode {
             U.moveArmEncoder(U.ARM_AUTO_PINCH);
             sleep(1000);
 
-            robot.moveInches(-15.5, -.25,10);
+            robot.moveInches(-18, -.25,10);
             //robot.strafeSeconds(2300, -0.25);
             //robot.resetDegrees(0.15);
 
             robot.rotateDegrees(-85,0.25);
-            robot.moveInches(28, 0.4, 10);
-            sleep(1700);
-            robot.rotateDegrees(85, 0.25);
+            robot.moveInches(55, 0.25, 10);
+            robot.moveInches(-15, 0.25, 10);
 
-            //move to foundation
-            robot.moveInches(13.5, 0.5, 10);
-            sleep(300);
+            robot.strafeSeconds(1000,0.25);
+
 
         }else{
             telemetry.addLine("third skystone seen");
             telemetry.update();
 
-            robot.strafeSeconds(800, 0.25);
-            robot.moveInches(13, 0.28, 10);
+            robot.strafeSeconds(850, 0.25);
+            robot.moveInches(19, 0.28, 10);
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
             sleep(1400);
@@ -169,21 +160,21 @@ public class blueVuforiaSkystone extends LinearOpMode {
             U.moveArmEncoder(U.ARM_AUTO_PINCH);
             sleep(1000);
 
-            robot.moveInches(-15, -.25, 10);
+            robot.moveInches(-19, -.25, 10);
             //robot.strafeSeconds(2800, -0.25);
             //robot.resetDegrees(0.25);
 
             robot.rotateDegrees(-85,0.25);
-            robot.moveInches(30, 0.4, 10);
-            sleep(1300);
-            robot.rotateDegrees(85, 0.25);
+            robot.moveInches(55, 0.25, 10);
 
-            robot.moveInches(16, 0.5, 10);
+            robot.moveInches(-15, 0.5, 10);
+
+            robot.strafeSeconds(1000,0.25);
             sleep(300);
 
         }
 
-
+/*
         robot.strafeSeconds(300,-0.7);
 
         U.moveArmEncoder(U.ARM_OUT_POSITION);
@@ -214,7 +205,7 @@ public class blueVuforiaSkystone extends LinearOpMode {
         //back up under skybridge
         robot.moveInches(20,0.25,10);
         robot.strafeSeconds(1100, -0.25);
-        robot.moveInches(28, 0.25, 10);
+        robot.moveInches(28, 0.25, 10);*/
 
     }
 }

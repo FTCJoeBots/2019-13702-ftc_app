@@ -56,6 +56,7 @@ public class Utility13702 {
     public Servo leftIntakeServo = null;
     public Servo rightIntakeServo = null;
     public Servo grabberServo = null;
+    public Servo capstoneServo = null;
 
     /* local OpMode members. */
     HardwareMap hwMap = null;
@@ -105,6 +106,9 @@ public class Utility13702 {
     static final double LEFT_INTAKE_SERVO_OUT_POSITION = 0.7;
     static final double LEFT_INTAKE_SERVO_IN_POSITION = 0.2;
 
+    static final double CAPSTONE_RELEASE = 0.5;
+    static final double CAPSTONE_UP = 0.85;
+
     double leftIntakeServoCurr = LEFT_INTAKE_SERVO_IN_POSITION;
 
     boolean rightIntakeServoUp = true;
@@ -138,6 +142,7 @@ public class Utility13702 {
         leftIntakeServo = hwMap.servo.get("leftIntakeServo");
         rightIntakeServo = hwMap.servo.get("rightIntakeServo");
         grabberServo = hwMap.servo.get("grabberServo");
+        capstoneServo = hwMap.servo.get("capstoneServo");
 
         // Set Default Motor Directions
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
@@ -156,6 +161,7 @@ public class Utility13702 {
         leftIntakeServo.setPosition(LEFT_INTAKE_SERVO_IN_POSITION);
         rightIntakeServo.setPosition(RIGHT_INTAKE_SERVO_UP_POSITION);
         grabberServo.setPosition(GRABBER_OPEN_POSITION);
+        capstoneServo.setPosition(CAPSTONE_UP);
 
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
@@ -523,5 +529,14 @@ public class Utility13702 {
                 leftIntakeServo.setPosition(leftIntakeServoCurr);
 
         }
+
+        public void releaseCapstone(){
+            capstoneServo.setPosition(CAPSTONE_RELEASE);
+        }
+
+        public void containCapstone(){
+            capstoneServo.setPosition(CAPSTONE_UP);
+        }
+
     }
 

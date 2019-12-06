@@ -109,13 +109,23 @@ public class redSkystone extends LinearOpMode {
             robot.moveInches(-19, .25, 10);
             //robot.strafeSeconds(1800, 0.25);
             //robot.resetDegrees(0.15);
-            robot.resetDegrees(0.15);
             robot.rotateDegrees(85, 0.25);
-            robot.moveInches(40, 0.25, 10);
+            robot.moveInches(37, 0.25, 10);
             sleep(100);
 
-            robot.moveInches(-13,0.3, 10);
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
+            U.moveLiftEncoder(U.LIFT_UP_POSITION);
+            sleep(1500);
 
+            robot.moveInches(-7,0.3, 10);
+
+            U.clampVertical();
+            U.leftIntakeServoOut();
+            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+            U.moveArmEncoder(U.ARM_IN_POSITION);
+            sleep(1500);
+
+            robot.moveInches(-7, 0.3, 10);
             robot.strafeSeconds(1000, -0.25);
 
         } else if(coords[1] < 0){
@@ -135,11 +145,21 @@ public class redSkystone extends LinearOpMode {
             //robot.resetDegrees(0.15);
             robot.resetDegrees(0.15);
             robot.rotateDegrees(85, 0.25);
-            robot.moveInches(43, 0.25, 10);
+            robot.moveInches(50, 0.25, 10);
             sleep(100);
 
-            robot.moveInches(-14 ,0.5, 10);
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
+            U.moveLiftEncoder(U.LIFT_UP_POSITION);
+            sleep(1500);
 
+            robot.moveInches(-8 ,0.5, 10);
+            U.clampVertical();
+            U.leftIntakeServoOut();
+            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+            U.moveArmEncoder(U.ARM_IN_POSITION);
+            sleep(1500);
+
+            robot.moveInches(-9, 0.5, 10);
             robot.strafeSeconds(1000, -0.25);
 
         }else{
@@ -160,11 +180,21 @@ public class redSkystone extends LinearOpMode {
             //robot.resetDegrees(0.15);
             robot.resetDegrees(0.15);
             robot.rotateDegrees(85, 0.25);
-            robot.moveInches(55, 0.25, 10);
+            robot.moveInches(57, 0.25, 10);
             sleep(100);
 
-            robot.moveInches(-14,0.5, 10);
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
+            U.moveLiftEncoder(U.LIFT_UP_POSITION);
+            sleep(1500);
 
+            robot.moveInches(-8,0.5, 10);
+            U.clampVertical();
+            U.leftIntakeServoOut();
+            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+            U.moveArmEncoder(U.ARM_IN_POSITION);
+            sleep(1500);
+
+            robot.moveInches(-8, 0.5,10);
             robot.strafeSeconds(1000, -0.25);
     }
 

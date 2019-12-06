@@ -262,18 +262,11 @@ public class TeleOp2019 extends LinearOpMode {
             telemetry.addData("armpos",U.liftMotor.getCurrentPosition());
             telemetry.addData("armtarget: ", U.liftTarget);
 
-            currrbumper1 = gamepad2.right_bumper;
-            if(currrbumper2 != prevrbumper2 && capstoneReleased == false){
+
+            if(gamepad2.right_bumper) {
                 U.releaseCapstone();
 
-                capstoneReleased = true;
-
-            }else{
-                U.containCapstone();
-
-                capstoneReleased = false;
             }
-            currrbumper2 = prevrbumper2;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////

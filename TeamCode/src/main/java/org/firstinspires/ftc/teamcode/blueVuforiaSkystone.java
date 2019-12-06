@@ -111,14 +111,24 @@ public class blueVuforiaSkystone extends LinearOpMode {
             U.moveArmEncoder(U.ARM_AUTO_PINCH);
             sleep(900);
 
-            robot.moveInches(-12.5, -.27,10);
-            robot.resetDegrees(0.15);
+            robot.moveInches(-15, -.27,10);
             //robot.strafeSeconds(1700, -0.25);
             //robot.resetDegrees(0.15);
             robot.rotateDegrees(-85,0.25);
-            robot.moveInches(43, 0.25, 10);
-            robot.moveInches(-15, 0.25, 10);
+            robot.moveInches(35, 0.25, 10);
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
+            U.moveLiftEncoder(U.LIFT_UP_POSITION);
+            sleep(1500);
 
+            robot.moveInches(-7, 0.25, 10);
+
+            U.clampVertical();
+            U.leftIntakeServoOut();
+            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+            U.moveArmEncoder(U.ARM_IN_POSITION);
+            sleep(1500);
+
+            robot.moveInches(-7, 0.25, 10);
             robot.strafeSeconds(1000, 0.25);
 
 
@@ -127,7 +137,6 @@ public class blueVuforiaSkystone extends LinearOpMode {
             telemetry.update();
 
             robot.strafeSeconds(500,0.25);
-            robot.resetDegrees(0.25);
             robot.moveInches(19,0.28,10);
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
@@ -136,14 +145,25 @@ public class blueVuforiaSkystone extends LinearOpMode {
             U.moveArmEncoder(U.ARM_AUTO_PINCH);
             sleep(1000);
 
-            robot.moveInches(-18, -.25,10);
+            robot.moveInches(-16, -.25,10);
             //robot.strafeSeconds(2300, -0.25);
             //robot.resetDegrees(0.15);
 
             robot.rotateDegrees(-85,0.25);
-            robot.moveInches(55, 0.25, 10);
-            robot.moveInches(-15, 0.25, 10);
+            robot.moveInches(45, 0.25, 10);
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
+            U.moveLiftEncoder(U.LIFT_UP_POSITION);
+            sleep(1500);
 
+            robot.moveInches(-7, 0.25, 10);
+
+            U.clampVertical();
+            U.leftIntakeServoOut();
+            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+            U.moveArmEncoder(U.ARM_IN_POSITION);
+            sleep(1500);
+
+            robot.moveInches(-7, 0.25, 10);
             robot.strafeSeconds(1000,0.25);
 
 
@@ -160,15 +180,25 @@ public class blueVuforiaSkystone extends LinearOpMode {
             U.moveArmEncoder(U.ARM_AUTO_PINCH);
             sleep(1000);
 
-            robot.moveInches(-19, -.25, 10);
+            robot.moveInches(-16, -.25, 10);
             //robot.strafeSeconds(2800, -0.25);
             //robot.resetDegrees(0.25);
 
             robot.rotateDegrees(-85,0.25);
-            robot.moveInches(55, 0.25, 10);
+            robot.moveInches(53, 0.25, 10);
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
+            U.moveLiftEncoder(U.LIFT_UP_POSITION);
+            sleep(1500);
 
-            robot.moveInches(-15, 0.5, 10);
+            robot.moveInches(-9, 0.5, 10);
 
+            U.clampVertical();
+            U.leftIntakeServoOut();
+            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+            U.moveArmEncoder(U.ARM_IN_POSITION);
+            sleep(1500);
+
+            robot.moveInches(-8, 0.25, 10);
             robot.strafeSeconds(1000,0.25);
             sleep(300);
 

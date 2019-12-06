@@ -75,8 +75,8 @@ public class blueParkingAgainstWall extends LinearOpMode {
         robot.init(hardwareMap,this);
         waitForStart();
 
-        robot.strafeSeconds(600, -0.5);
-        robot.moveInches(-5,.5,6);
+        robot.strafeSeconds(600, -0.25);
+        robot.moveInches(-5,0.25,6);
 
     }
 

@@ -41,7 +41,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="Blue Normal Stone", group="Pushbot")
-//@Disabled
+@Disabled
 public class blueStoneParking extends LinearOpMode {
 
     /* Declare OpMode members. */

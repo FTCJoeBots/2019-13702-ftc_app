@@ -194,12 +194,16 @@ public class TeleOp2019 extends LinearOpMode {
 
 ////////////////////////////////////////////////////////////////////////////
 
-            while(gamepad2.y){
+            if(gamepad2.y){
                //arm motor position
                 U.moveArmEncoder(U.ARM_DEFAULT_POSITION);
 
                 //lift motor position
                 U.moveLiftEncoder(U.LIFT_DEFAULT_POSITION);
+            }
+
+            if(gamepad2.dpad_down){
+                U.leftIntakeServo.setPosition(U.LEFT_INTAKE_SERVO_AUTO_POSITION);
             }
 
 

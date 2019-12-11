@@ -38,15 +38,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="Red Foundation", group="Pushbot")
+@Autonomous(name="Everything Red", group="Pushbot")
 //@Disabled
-public class redFoundationParking extends LinearOpMode {
+public class redEverything extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
-    Utility13702      U   = new Utility13702();
-    Image_Recognition    V = new Image_Recognition();
-    private ElapsedTime     runtime = new ElapsedTime();
+    HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    Utility13702 U = new Utility13702();
+    Image_Recognition I = new Image_Recognition();
+    private ElapsedTime runtime = new ElapsedTime();
 
 
     @Override
@@ -55,33 +55,36 @@ public class redFoundationParking extends LinearOpMode {
         telemetry.addLine("Press > to Start");
         telemetry.update();
 
-        robot.init(hardwareMap,this);
-        U.init(hardwareMap,this);
+        telemetry.addLine("Press > to Start");
+        telemetry.update();
+
+        robot.init(hardwareMap, this);
+        U.init(hardwareMap, this);
+        I.init(hardwareMap,this);
         waitForStart();
 
         //move to foundation
-        robot.moveInches(-39,0.25, 10);
+        robot.moveInches(-39, 0.25, 10);
         sleep(1000);
-        robot.strafeSeconds(640,-0.7);
+        robot.strafeSeconds(640, -0.7);
 
         //grab foundation
         U.closeGrabber();
         sleep(2000);
 
         //drive into building site
-        robot.moveInches(80, 0.25,15);
-        robot.strafeSeconds(3000,0.5);
-       // robot.moveInches(20, 0.25, 10);
+        robot.moveInches(80, 0.25, 15);
+        robot.strafeSeconds(3000, 0.5);
+        // robot.moveInches(20, 0.25, 10);
 
         //release grabber
         U.openGrabber();
         sleep(1000);
 
         //back up under skybridge
-        robot.moveInches(-55,0.25,10);
+        robot.moveInches(-55, 0.25, 10);
 
-        telemetry.addLine("We're done. Press stop.");
-        telemetry.update();
+
 
     }
 

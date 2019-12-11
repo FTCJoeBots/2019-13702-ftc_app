@@ -76,8 +76,13 @@ public class blueFoundationParking extends LinearOpMode {
         U.openGrabber();
         sleep(1000);
 
-        //back up under skybridge
-        robot.moveInches(55,0.25,10);
+        //near skybridge
+        robot.moveInches(20,0.25,10);
+        robot.strafeSeconds(1100, -0.25);
+        robot.moveInches(28, 0.25, 10);
+
+        //near wall
+        robot.moveInches(52, 0.25, 20);
 
         telemetry.addLine("We're done. Press stop.");
         telemetry.update();

@@ -89,8 +89,8 @@ public class Utility13702 {
 
 
 
-    static final double CLAMP_OPEN_POSITION = 0.3;
-    static final double CLAMP_CLOSED_POSITION = 0.15;
+    static final double CLAMP_OPEN_POSITION = 0.15;
+    static final double CLAMP_CLOSED_POSITION = 0.01;
 
     static final double CLAMP_HORIZONTAL_POSITION = 0.4;
     static final double CLAMP_VERTICAL_POSITION = 0.05;
@@ -105,9 +105,13 @@ public class Utility13702 {
 
     static final double LEFT_INTAKE_SERVO_OUT_POSITION = 0.7;
     static final double LEFT_INTAKE_SERVO_IN_POSITION = 0.2;
+    static final double LEFT_INTAKE_SERVO_AUTO_POSITION = 0.1;
 
     static final double CAPSTONE_RELEASE = 0.5;
     static final double CAPSTONE_UP = 0.85;
+
+    static final int LIFT_AUTO_RELEASE_BLOCK = -615;
+    static final int ARM_AUTO_RELEASE_BLOCK = -3500;
 
     double leftIntakeServoCurr = LEFT_INTAKE_SERVO_IN_POSITION;
 
@@ -315,7 +319,7 @@ public class Utility13702 {
 
     public void moveArmEncoder(int armEncoder){
 
-        armMotor.setPower(0.5);
+        armMotor.setPower(0.6);
         armMotor.setTargetPosition(armEncoder);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }

@@ -66,6 +66,7 @@ public class blueParkingAgainstWall extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
+    Utility13702 U = new Utility13702();
     private ElapsedTime runtime = new ElapsedTime();
 
 
@@ -73,10 +74,15 @@ public class blueParkingAgainstWall extends LinearOpMode {
     public void runOpMode() {
 
         robot.init(hardwareMap,this);
+        U.init(hardwareMap, this);
+
         waitForStart();
 
+        robot.moveInches(6,0.25,10);
         robot.strafeSeconds(600, -0.25);
-        robot.moveInches(-5,0.25,6);
+        //sleep(20000);
+
+
 
     }
 

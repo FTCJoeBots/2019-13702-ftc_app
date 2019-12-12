@@ -62,14 +62,14 @@ public class blueEverything extends LinearOpMode {
         waitForStart();
         //move to foundation
         robot.moveInches(39, 0.25, 15);
-        sleep(1000);
-        robot.strafeSeconds(640, -0.7);
+        sleep(500);
+        robot.strafeSeconds(640, -0.4);
         //grab foundation
         U.closeGrabber();
 
-        sleep(250);
+        sleep(500);
         //drive into building site
-        robot.moveInches(-90, 0.5, 15);
+        robot.moveInches(-90, 0.3, 15);
         robot.strafeSeconds(1000, 0.5);
         // robot.moveInches(-10, 0.25, 10);
 
@@ -82,11 +82,11 @@ public class blueEverything extends LinearOpMode {
         robot.rotateDegrees(-85, .5);
         robot.moveInches(-5, 0.1, 10);
         robot.strafeSeconds(1000,.3);
-        robot.strafeSeconds(250,-0.3);
+        robot.strafeSeconds(750,-0.20);
         //robot.moveInches(-5,0.1, 10);
 
         robot.moveInches(6.3, 0.42, 10);
-        sleep(300);
+
         //move all mechanisms out
         U.leftIntakeServoOut();
 
@@ -98,7 +98,7 @@ public class blueEverything extends LinearOpMode {
 
         //move arm out
         U.moveArmEncoder(U.ARM_AUTO_GRABBING);
-        U.clampClosedHorizontal();
+        U.grabBlock();
 
         U.leftIntakeServo.setPosition(U.LEFT_INTAKE_SERVO_AUTO_POSITION);
         sleep(500);
@@ -109,7 +109,7 @@ public class blueEverything extends LinearOpMode {
 
         //loop over I.skystone coordiates a few times
         int i = 0;
-        while (i < 15) {
+        while (i < 25) {
             coords = I.skystone_cooridinates();
             i = i + 1;
             sleep(80);
@@ -125,7 +125,7 @@ public class blueEverything extends LinearOpMode {
             telemetry.addLine("first skystone seen");
             telemetry.update();
 
-
+            robot.strafeSeconds(200,0.25);
             robot.moveInches(18, 0.28, 10);
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
@@ -138,25 +138,23 @@ public class blueEverything extends LinearOpMode {
             //robot.strafeSeconds(1700, -0.25);
             //robot.resetDegrees(0.15);
             robot.rotateDegrees(-85, 0.25);
-            robot.strafeSeconds(500 ,-0.25);
+            robot.strafeSeconds(1000 ,-0.25);
 
             //goes forward beyond skybridge
             robot.moveInches(75, 0.25, 10);
-            U.moveArmEncoder(U.ARM_AUTO_RELEASE_BLOCK);
-
-            robot.moveInches(-22, 0.5, 10);
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
 
             U.clampVertical();
-            U.leftIntakeServoOut();
 
+            robot.moveInches(-16, 0.25, 10);
             robot.strafeSeconds(1000, -0.25);
-            sleep(300);
+
 
         } else if (coords[1] != 777) {
             telemetry.addLine("second skystone seen");
             telemetry.update();
 
-            robot.strafeSeconds(700,-.25);
+            robot.strafeSeconds(650,-.25);
             robot.moveInches(19, 0.28, 10);
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
@@ -170,19 +168,16 @@ public class blueEverything extends LinearOpMode {
             //robot.resetDegrees(0.15);
 
             robot.rotateDegrees(-85, 0.25);
-            robot.strafeSeconds(500 ,-0.25);
+            robot.strafeSeconds(1000 ,-0.25);
 
             //goes forward beyond skybridge
-            robot.moveInches(68, 0.25, 10);
-            U.moveArmEncoder(U.ARM_AUTO_RELEASE_BLOCK);
-
-            robot.moveInches(-22, 0.5, 10);
+            robot.moveInches(60, 0.25, 10);
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
 
             U.clampVertical();
-            U.leftIntakeServoOut();
 
+            robot.moveInches(-16, 0.25, 10);
             robot.strafeSeconds(1000, -0.25);
-            sleep(300);
 
 
         } else {
@@ -203,19 +198,15 @@ public class blueEverything extends LinearOpMode {
             //robot.resetDegrees(0.25);
 
             robot.rotateDegrees(-85, 0.25);
-            robot.strafeSeconds(500 ,-0.25);
+            robot.strafeSeconds(1000 ,-0.25);
 
             //goes forward beyond skybridge
-            robot.moveInches(73, 0.25, 10);
-            U.moveArmEncoder(U.ARM_AUTO_RELEASE_BLOCK);
-
-            robot.moveInches(-22, 0.5, 10);
+            robot.moveInches(75, 0.25, 10);
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
 
             U.clampVertical();
-            U.leftIntakeServoOut();
 
-            robot.strafeSeconds(1000, -0.25);
-            sleep(300);
+            robot.moveInches(-16, 0.25, 10);
 
 
         }

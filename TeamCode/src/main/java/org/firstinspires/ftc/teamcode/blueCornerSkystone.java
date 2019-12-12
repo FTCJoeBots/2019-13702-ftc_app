@@ -61,11 +61,11 @@ public class blueCornerSkystone extends LinearOpMode {
 
         waitForStart();
 
-        robot.strafeSeconds(300,-0.3);
+        robot.strafeSeconds(400,-0.15);
         //robot.moveInches(-5,0.1, 10);
 
         robot.moveInches(6.3, 0.42, 10);
-        sleep(300);
+
         //move all mechanisms out
         U.leftIntakeServoOut();
 
@@ -94,6 +94,8 @@ public class blueCornerSkystone extends LinearOpMode {
             sleep(80);
         }
 
+        sleep(10000);
+
         //get the second coordinate
         //coords[1];
         // if the second coordinate is less than 0, position 1
@@ -104,7 +106,7 @@ public class blueCornerSkystone extends LinearOpMode {
             telemetry.addLine("first skystone seen");
             telemetry.update();
 
-
+            robot.strafeSeconds(200,0.25);
             robot.moveInches(18, 0.28, 10);
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
@@ -141,7 +143,7 @@ public class blueCornerSkystone extends LinearOpMode {
             telemetry.addLine("second skystone seen");
             telemetry.update();
 
-            robot.strafeSeconds(700,-.25);
+            robot.strafeSeconds(850,-.25);
             robot.moveInches(19, 0.28, 10);
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
@@ -179,7 +181,7 @@ public class blueCornerSkystone extends LinearOpMode {
             telemetry.addLine("third skystone seen");
             telemetry.update();
 
-            robot.strafeSeconds(400, -0.25);
+            robot.strafeSeconds(300, -0.25);
             robot.moveInches(19, 0.28, 10);
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);

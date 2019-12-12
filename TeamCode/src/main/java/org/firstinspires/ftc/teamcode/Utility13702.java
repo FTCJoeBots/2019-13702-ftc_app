@@ -85,7 +85,7 @@ public class Utility13702 {
     static final int ARM_OUT_POSITION = -4225;
     static final int ARM_DEFAULT_POSITION = -687;
     static final int ARM_AUTO_GRABBING = -4100;
-    static final int ARM_AUTO_PINCH = -2180                                         ;
+    static final int ARM_AUTO_PINCH = -2820                                         ;
 
 
 

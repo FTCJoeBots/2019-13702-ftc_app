@@ -68,7 +68,7 @@ public class redSkystone extends LinearOpMode {
         sleep(300);
 
         //move all mechanisms out
-        U.leftIntakeServoOut();
+        U.leftIntakeServo.setPosition(U.LEFT_INTAKE_SERVO_AUTO_POSITION);
         sleep(300);
 
 
@@ -78,17 +78,16 @@ public class redSkystone extends LinearOpMode {
 
         //move arm out
         U.moveArmEncoder(U.ARM_AUTO_GRABBING);
+        U.grabBlock();
         sleep(1500);
 
-        U.clampClosedHorizontal();
-        sleep(300);
 
         //variable for coordinates
         double coords[] = {777, 777};
 
         //loop over I.skystone coordiates a few times
         int i = 0;
-        while (i < 40) {
+        while (i < 25) {
             coords = I.skystone_cooridinates();
             i = i + 1;
             sleep(80);
@@ -148,18 +147,14 @@ public class redSkystone extends LinearOpMode {
             robot.moveInches(50, 0.25, 10);
             sleep(100);
 
-            U.moveArmEncoder(U.ARM_AUTO_RELEASE_BLOCK);
-            U.moveLiftEncoder(U.LIFT_AUTO_RELEASE_BLOCK);
-            sleep(1500);
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
 
-            robot.moveInches(-8 ,0.5, 10);
+            robot.moveInches(-21 ,0.5, 10);
             U.clampVertical();
             U.leftIntakeServoOut();
-            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
-            U.moveArmEncoder(U.ARM_IN_POSITION);
+
             sleep(1500);
 
-            robot.moveInches(-9, 0.5, 10);
             robot.strafeSeconds(1000, -0.25);
 
         }else{
@@ -186,9 +181,7 @@ public class redSkystone extends LinearOpMode {
             sleep(100);
 
             U.leftIntakeServoOut();
-            U.moveArmEncoder(U.ARM_AUTO_RELEASE_BLOCK);
-            U.moveLiftEncoder(U.LIFT_AUTO_RELEASE_BLOCK);
-            sleep(1500);
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
 
             robot.moveInches(-13,0.5, 10);
             U.clampVertical();

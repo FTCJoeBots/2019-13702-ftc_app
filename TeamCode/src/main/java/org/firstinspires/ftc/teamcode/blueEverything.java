@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="Everything Blue", group="Pushbot")
+@Autonomous(name="Blue Everything", group="Pushbot")
 //@Disabled
 public class blueEverything extends LinearOpMode {
 
@@ -60,6 +60,7 @@ public class blueEverything extends LinearOpMode {
         I.init(hardwareMap, this);
 
         waitForStart();
+
         //move to foundation
         robot.moveInches(39, 0.25, 15);
         sleep(500);
@@ -82,10 +83,12 @@ public class blueEverything extends LinearOpMode {
         robot.rotateDegrees(-85, .5);
         robot.moveInches(-5, 0.1, 10);
         robot.strafeSeconds(1000,.3);
-        robot.strafeSeconds(750,-0.20);
+        sleep(100);
+        robot.strafeSeconds(600,-0.25);
+        sleep(200);
         //robot.moveInches(-5,0.1, 10);
 
-        robot.moveInches(6.3, 0.42, 10);
+        robot.moveInches(6, 0.42, 10);
 
         //move all mechanisms out
         U.leftIntakeServoOut();
@@ -99,6 +102,7 @@ public class blueEverything extends LinearOpMode {
         //move arm out
         U.moveArmEncoder(U.ARM_AUTO_GRABBING);
         U.grabBlock();
+        sleep(250);
 
         U.leftIntakeServo.setPosition(U.LEFT_INTAKE_SERVO_AUTO_POSITION);
         sleep(500);
@@ -125,7 +129,6 @@ public class blueEverything extends LinearOpMode {
             telemetry.addLine("first skystone seen");
             telemetry.update();
 
-            robot.strafeSeconds(200,0.25);
             robot.moveInches(18, 0.28, 10);
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
@@ -147,8 +150,6 @@ public class blueEverything extends LinearOpMode {
             U.clampVertical();
 
             robot.moveInches(-16, 0.25, 10);
-            robot.strafeSeconds(1000, -0.25);
-
 
         } else if (coords[1] != 777) {
             telemetry.addLine("second skystone seen");
@@ -177,7 +178,6 @@ public class blueEverything extends LinearOpMode {
             U.clampVertical();
 
             robot.moveInches(-16, 0.25, 10);
-            robot.strafeSeconds(1000, -0.25);
 
 
         } else {
@@ -201,7 +201,7 @@ public class blueEverything extends LinearOpMode {
             robot.strafeSeconds(1000 ,-0.25);
 
             //goes forward beyond skybridge
-            robot.moveInches(75, 0.25, 10);
+            robot.moveInches(67, 0.25, 10);
             U.moveArmEncoder(U.ARM_OUT_POSITION);
 
             U.clampVertical();
@@ -212,6 +212,7 @@ public class blueEverything extends LinearOpMode {
         }
 
     }
+
 
 
 }

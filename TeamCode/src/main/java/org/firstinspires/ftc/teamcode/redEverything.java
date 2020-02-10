@@ -125,8 +125,6 @@ public class redEverything extends LinearOpMode {
                 sleep(900);
 
                 robot.moveInches(-45, .25, 10);
-                //robot.strafeSeconds(1800, 0.25);
-                //robot.resetDegrees(0.15);
                 robot.rotateDegrees(85, 0.25);
                 robot.strafeSeconds(1000,0.25);
                 robot.moveInches(85, 0.4, 10);
@@ -151,15 +149,13 @@ public class redEverything extends LinearOpMode {
                 sleep(900);
 
                 robot.moveInches(-45, .25, 10);
-                //robot.strafeSeconds(1800, 0.25);
-                //robot.resetDegrees(0.15);3
                 robot.rotateDegrees(85, 0.25);
                 robot.strafeSeconds(1000,0.25);
                 robot.moveInches(75, 0.4, 10);
                 sleep(100);
 
                 U.moveArmEncoder(U.ARM_OUT_POSITION);
-                robot.moveInches(-21 ,0.5, 10);
+                robot.moveInches(-12 ,0.5, 10);
 
                 U.clampVertical();
                 U.leftIntakeServoOut();
@@ -180,8 +176,6 @@ public class redEverything extends LinearOpMode {
                 sleep(900);
 
                 robot.moveInches(-45, .25, 10);
-                //robot.strafeSeconds(1800, 0.25);
-                //robot.resetDegrees(0.15);
                 robot.rotateDegrees(85, 0.25);
                 robot.strafeSeconds(1000,0.25);
                 robot.moveInches(67, 0.4, 10);
@@ -190,10 +184,13 @@ public class redEverything extends LinearOpMode {
                 U.leftIntakeServoOut();
                 U.moveArmEncoder(U.ARM_OUT_POSITION);
 
-                robot.moveInches(-13,0.5, 10);
+                robot.moveInches(-12,0.5, 10);
             }
 
+            stop();
+
     }
+
 
 
 }

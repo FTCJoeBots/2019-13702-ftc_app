@@ -40,8 +40,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="Blue Normal Stone", group="Pushbot")
-@Disabled
+@Autonomous(name="Blue Normal Stone + Foundation", group="Pushbot")
+//@Disabled
 public class blueStoneParking extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -55,97 +55,74 @@ public class blueStoneParking extends LinearOpMode {
         telemetry.addLine("Press > to Start");
         telemetry.update();
 
-        robot.init(hardwareMap,this);
+        robot.init(hardwareMap, this);
         U.init(hardwareMap,this);
         waitForStart();
 
-        //move all mechanisms out
-        U.leftIntakeServoOut();
-        sleep(300);
-
-
-        //move lift up
-        U.moveLiftEncoder(-900);
-        sleep(1000);
-
-        //move arm out
-        U.moveArmEncoder(U.ARM_AUTO_GRABBING);
-        sleep(1500);
-
-        U.clampClosedHorizontal();
-        sleep(300);
-
-
-       //FIRST SKYSTONE POS
-
-        robot.moveInches(24,0.28,10);
-
-        U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
-        sleep(500);
-
-        U.moveArmEncoder(U.ARM_AUTO_PINCH);
-        sleep(900);
-
-        robot.moveInches(-17, -.25,10);
-        robot.strafeSeconds(1700, -0.25);
-        robot.resetDegrees(0.15);
-
-
-
-        //SECOND SKYSTONE POS
-        //robot.strafeSeconds(300,-0.25);
-
-
-        //THIRD SKYSTONE POS
-
-
         //move to foundation
-        robot.moveInches(19,0.25, 15);
-
-        robot.strafeSeconds(640,-0.7);
-
-        U.moveArmEncoder(U.ARM_OUT_POSITION);
-        U.moveLiftEncoder(U.LIFT_UP_POSITION);
-
-        sleep(1500);
+        robot.moveInches(39, 0.25, 15);
+        sleep(500);
+        robot.strafeSeconds(640, -0.4);
         //grab foundation
         U.closeGrabber();
 
-        sleep(1000);
+        sleep(500);
         //drive into building site
-        U.clampVertical();
-        U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
-        U.moveArmEncoder(U.ARM_IN_POSITION);
-        robot.moveInches(-90, 0.25,15);
-
-        robot.strafeSeconds(1500, 0.5);
-
+        robot.moveInches(-90, 0.35, 15);
+        robot.strafeSeconds(1000, 0.5);
         // robot.moveInches(-10, 0.25, 10);
 
         //release grabber
         U.openGrabber();
+        sleep(500);
 
-        sleep(1000);
+        //goes to skystone cornner
+        robot.moveInches(100, 0.57, 10);
+        robot.rotateDegrees(-85, .5);
+        robot.moveInches(-5, 0.2, 10);
+        robot.strafeSeconds(1000,.3);
 
+        robot.strafeSeconds(500,-0.2);
+        robot.resetDegrees(0.15);
+        sleep(100);
+        //robot.moveInches(-5,0.1, 10);
 
-        //back up under skybridge
-        robot.moveInches(20,0.25,10);
-        robot.strafeSeconds(1200, -0.25);
-        robot.moveInches(25, 0.25, 10);
+        robot.moveInches(4, 0.25, 10);
 
+        //move all mechanisms out
+        U.leftIntakeServoOut();
 
+        //move lift up
+        U.moveLiftEncoder(-900);
+        sleep(500);
 
-        telemetry.addLine("done");
-        telemetry.update();
+        //move arm out
+        U.moveArmEncoder(U.ARM_AUTO_GRABBING);
+        U.grabBlock();
+        sleep(250);
 
+        U.leftIntakeServo.setPosition(U.LEFT_INTAKE_SERVO_AUTO_POSITION);
+        sleep(500);
 
+            robot.moveInches(18, 0.28, 10);
 
-        //move up to skystone
+            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+            sleep(500);
 
+            U.moveArmEncoder(U.ARM_AUTO_PINCH);
+            sleep(900);
 
-        telemetry.addLine("We're done. Press stop.");
-        telemetry.update();
+            robot.moveInches(-27, -.27, 10);
+            //robot.strafeSeconds(1700, -0.25);
+            //robot.resetDegrees(0.15);
+            robot.rotateDegrees(-85, 0.25);
+            robot.strafeSeconds(1000 ,-0.25);
 
+            //goes forward beyond skybridge
+            robot.moveInches(75, 0.4, 10);
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
+            robot.moveInches(-14, 0.25, 10);
+
+        }
     }
 
-}

@@ -29,21 +29,35 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.util.Util;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import java.util.Locale;
 
 /**
  * This is sample code used to explain how to write an autonomous code
  *
  */
 
-@Autonomous(name="Blue Everything", group="Pushbot")
-//@Disabled
-public class blueEverything extends LinearOpMode {
+@Autonomous(name="Blue Everything Color Sensor", group="Pushbot")
+@Disabled
+public class blueEverythingColorSensor extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    Utility13702Sensor U2 = new Utility13702Sensor();
     Utility13702 U = new Utility13702();
     Image_Recognition I = new Image_Recognition();
     private ElapsedTime runtime = new ElapsedTime();
@@ -56,10 +70,73 @@ public class blueEverything extends LinearOpMode {
         telemetry.update();
 
         robot.init(hardwareMap, this);
-        U.init(hardwareMap, this);
+        U2.init(hardwareMap, this);
         I.init(hardwareMap, this);
 
+        // Get a reference to the color sensor
+        U2.colorSensorRight = hardwareMap.get(ColorSensor.class, "colorSensorRight");
+        U2.colorSensorLeft = hardwareMap.get(ColorSensor.class, "colorSensorLeft");
+
+        // Get a reference to the distance sensor
+        U2.distanceSensorRight = hardwareMap.get(DistanceSensor.class, "colorSensorRight");
+        U2.distanceSensorLeft = hardwareMap.get(DistanceSensor.class, "colorSensorLeft");
+
+        // hsvValues is an array that will hold the hue, saturation, and value information
+        float hsvValuesRight[] = {0F, 0F, 0F};
+        float hsvValuesLeft[] = {0F, 0F, 0F};
+
+        // values is a reference to the hsvValues array
+        final float valuesRight[] = hsvValuesRight;
+        final float valuesLeft[] = hsvValuesLeft;
+
+        // Sometimes it helps to multiply the raw RGB values with a scale factor
+        // To amplify/attentuate the measured values
+        final double SCALE_FACTOR = 225;
+
+        // Get a reference to the RelativeLayout so we can change the background
+        // Color of the Robot Controller app to match the hue detected by the RGB sensor
+        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+        final View reativLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+
+
+        double SkystonePos = 50;
+
         waitForStart();
+
+        // Loop and read the RGB and distance data
+        // Note we use upModeIsActive() as our loop condition because it is an interruptible method
+
+        // Convert the RGB values to HSV values
+        // Multiply by the SCALE_FACTOR
+        // Then cast is back to int (SCALE_FACTOR is a double)
+        Color.RGBToHSV((int) (U2.colorSensorRight.red() * SCALE_FACTOR),
+                (int) (U2.colorSensorRight.green() * SCALE_FACTOR),
+                (int) (U2.colorSensorRight.blue() * SCALE_FACTOR),
+                hsvValuesRight);
+
+        Color.RGBToHSV((int) (U2.colorSensorLeft.red() * SCALE_FACTOR),
+                (int) (U2.colorSensorLeft.green() * SCALE_FACTOR),
+                (int) (U2.colorSensorLeft.blue() * SCALE_FACTOR),
+                hsvValuesLeft);
+
+        // Send the info back to driver station using telemetry function.
+        telemetry.addData("Distance (cm) Right",
+                String.format(Locale.US, "%.02f", U2.distanceSensorRight.getDistance(DistanceUnit.CM)));
+        telemetry.addData("Alpha Right", U2.colorSensorRight.alpha());
+        telemetry.addData("Red Right", U2.colorSensorRight.red());
+        telemetry.addData("Green Right", U2.colorSensorRight.green());
+        telemetry.addData("Blue Right", U2.colorSensorRight.blue());
+        telemetry.addData("Hue Right", hsvValuesRight[0]);
+
+        telemetry.addData("Distance (cm) Right",
+                String.format(Locale.US, "%.02f", U2.distanceSensorLeft.getDistance(DistanceUnit.CM)));
+        telemetry.addData("Alpha Right", U2.colorSensorLeft.alpha());
+        telemetry.addData("Red Right", U2.colorSensorLeft.red());
+        telemetry.addData("Green Right", U2.colorSensorLeft.green());
+        telemetry.addData("Blue Right", U2.colorSensorLeft.blue());
+        telemetry.addData("Hue Right", hsvValuesRight[0]);
+
+
 
         //move to foundation
         robot.moveInches(39, 0.25, 15);

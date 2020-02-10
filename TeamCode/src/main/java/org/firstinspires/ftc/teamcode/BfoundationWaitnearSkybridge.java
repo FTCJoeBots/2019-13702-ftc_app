@@ -38,9 +38,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="Blue Foundation", group="Pushbot")
+@Autonomous(name="Blue Wait Near Skybridge Foundation", group="Pushbot")
 //@Disabled
-public class blueFoundationParking extends LinearOpMode {
+public class BfoundationWaitnearSkybridge extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
@@ -75,17 +75,18 @@ public class blueFoundationParking extends LinearOpMode {
         //release grabber
         U.openGrabber();
         sleep(1000);
+        sleep(10000);
 
         //near skybridge
         robot.moveInches(20,0.25,10);
         robot.strafeSeconds(1100, -0.25);
         robot.moveInches(28, 0.25, 10);
 
+        robot.strafeSeconds(500,0.25);
+
         //near wall
-        robot.moveInches(52, 0.25, 20);
-        U.leftIntakeServoOut();
-        sleep(700);
-        U.moveArmEncoder(U.ARM_OUT_POSITION);
+        //robot.moveInches(52, 0.25, 20);
+        //robot.strafeSeconds(700,0.25);
 
         telemetry.addLine("We're done. Press stop.");
         telemetry.update();

@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -40,13 +39,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="Blue Normal Stone + Foundation", group="Pushbot")
-//@Disabled
-public class blueStoneParking extends LinearOpMode {
+@Autonomous(name="Red Corner Skystone", group="Pushbot")
+@Disabled
+public class redCornerSkystone extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
-    Utility13702      U   = new Utility13702();
+    Utility13702        U = new Utility13702();
+    Image_Recognition    I = new Image_Recognition();
+    private ElapsedTime     runtime = new ElapsedTime();
 
 
     @Override
@@ -55,56 +56,46 @@ public class blueStoneParking extends LinearOpMode {
         telemetry.addLine("Press > to Start");
         telemetry.update();
 
-        robot.init(hardwareMap, this);
-        U.init(hardwareMap,this);
+        robot.init(hardwareMap,this);
+        U.init(hardwareMap, this);
+        I.init(hardwareMap,this);
+
+
         waitForStart();
 
-        //move to foundation
-        robot.moveInches(39, 0.25, 15);
-        sleep(500);
-        robot.strafeSeconds(640, -0.4);
-        //grab foundation
-        U.closeGrabber();
+        robot.moveInches(6, 0.42, 10);
+        //////////////////
 
-        sleep(500);
-        //drive into building site
-        robot.moveInches(-90, 0.35, 15);
-        robot.strafeSeconds(1000, 0.5);
-        // robot.moveInches(-10, 0.25, 10);
-
-        //release grabber
-        U.openGrabber();
-        sleep(500);
-
-        //goes to skystone cornner
-        robot.moveInches(100, 0.57, 10);
-        robot.rotateDegrees(-85, .5);
-        robot.moveInches(-5, 0.2, 10);
-        robot.strafeSeconds(1000,.3);
-
-        robot.strafeSeconds(500,-0.2);
-        robot.resetDegrees(0.15);
-        sleep(100);
-        //robot.moveInches(-5,0.1, 10);
-
-        robot.moveInches(4, 0.25, 10);
 
         //move all mechanisms out
         U.leftIntakeServoOut();
 
         //move lift up
         U.moveLiftEncoder(-900);
-        sleep(500);
+        sleep(300);
 
         //move arm out
         U.moveArmEncoder(U.ARM_AUTO_GRABBING);
         U.grabBlock();
-        sleep(250);
+        sleep(200);
 
         U.leftIntakeServo.setPosition(U.LEFT_INTAKE_SERVO_AUTO_POSITION);
-        sleep(500);
 
-            robot.moveInches(18, 0.28, 10);
+        //variable for coordinates
+        double coords[] = {777, 777};
+
+        //loop over I.skystone coordiates a few times
+        int i = 0;
+        while (i < 15) {
+            coords = I.skystone_cooridinates();
+            i = i + 1;
+            sleep(80);
+        }
+
+
+        if (coords[1] < 0) {
+
+            robot.moveInches(16, 0.28, 10);
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
             sleep(500);
@@ -112,17 +103,71 @@ public class blueStoneParking extends LinearOpMode {
             U.moveArmEncoder(U.ARM_AUTO_PINCH);
             sleep(900);
 
-            robot.moveInches(-27, -.27, 10);
-            //robot.strafeSeconds(1700, -0.25);
-            //robot.resetDegrees(0.15);
-            robot.rotateDegrees(-85, 0.25);
-            robot.strafeSeconds(1000 ,-0.25);
+            robot.moveInches(-45, .25, 10);
+            robot.rotateDegrees(85, 0.25);
+            robot.strafeSeconds(1000,0.25);
+            robot.moveInches(85, 0.4, 10);
+            sleep(100);
 
-            //goes forward beyond skybridge
-            robot.moveInches(75, 0.4, 10);
             U.moveArmEncoder(U.ARM_OUT_POSITION);
-            robot.moveInches(-14, 0.25, 10);
+            robot.moveInches(-16,0.3,10);
 
+            U.clampVertical();
+            U.leftIntakeServoOut();
+
+        } else if(coords[1] != 777){
+
+            //SECOND SKYSTONE POS
+            robot.strafeSeconds(500, 0.25);
+            robot.moveInches(24, 0.28, 10);
+
+            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+            sleep(500);
+
+            U.moveArmEncoder(U.ARM_AUTO_PINCH);
+            sleep(900);
+
+            robot.moveInches(-45, .25, 10);
+            robot.rotateDegrees(85, 0.25);
+            robot.strafeSeconds(1000,0.25);
+            robot.moveInches(75, 0.4, 10);
+            sleep(100);
+
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
+            robot.moveInches(-21 ,0.5, 10);
+
+            U.clampVertical();
+            U.leftIntakeServoOut();
+
+        }else{
+
+            //THIRD SKYSTONE POS
+            robot.strafeSeconds(900, 0.2);
+
+            U.leftIntakeServoIn();
+
+            robot.moveInches(24, 0.28, 10);
+
+            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
+            sleep(500);
+
+            U.moveArmEncoder(U.ARM_AUTO_PINCH);
+            sleep(900);
+
+            robot.moveInches(-45, .25, 10);
+            robot.rotateDegrees(85, 0.25);
+            robot.strafeSeconds(1000,0.25);
+            robot.moveInches(67, 0.4, 10);
+            sleep(100);
+
+            U.leftIntakeServoOut();
+            U.moveArmEncoder(U.ARM_OUT_POSITION);
+
+            robot.moveInches(-7,0.5, 10);
         }
+
+        stop();
+
     }
 
+}

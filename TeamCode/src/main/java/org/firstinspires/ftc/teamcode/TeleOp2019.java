@@ -70,6 +70,10 @@ public class TeleOp2019 extends LinearOpMode {
     boolean currlbumper1;
     boolean prevlbumper1 = false;
 
+    boolean currrbumper2;
+    boolean prevrbumper2 = false;
+    boolean capstoneReleased = false;
+
     boolean isClampOpen = false;
 
     double clampCurr;
@@ -190,12 +194,16 @@ public class TeleOp2019 extends LinearOpMode {
 
 ////////////////////////////////////////////////////////////////////////////
 
-            while(gamepad2.y){
+            if(gamepad2.y){
                //arm motor position
                 U.moveArmEncoder(U.ARM_DEFAULT_POSITION);
 
                 //lift motor position
                 U.moveLiftEncoder(U.LIFT_DEFAULT_POSITION);
+            }
+
+            if(gamepad2.dpad_down){
+                U.leftIntakeServo.setPosition(U.LEFT_INTAKE_SERVO_AUTO_POSITION);
             }
 
 
@@ -252,11 +260,18 @@ public class TeleOp2019 extends LinearOpMode {
             U.moveArm(gamepad2.right_stick_y);
 
             U.armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            telemetry.addData("armpos",U.armMotor.getCurrentPosition());
+            telemetry.addData("liftpos",U.armMotor.getCurrentPosition());
             telemetry.addData("armtarget: ", U.armTarget);
 
             telemetry.addData("armpos",U.liftMotor.getCurrentPosition());
             telemetry.addData("armtarget: ", U.liftTarget);
+
+
+            if(gamepad2.right_bumper) {
+                U.releaseCapstone();
+
+            }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////
             if (gamepad1.y != prevy1) {

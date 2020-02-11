@@ -69,7 +69,7 @@ public class HardwareJoeBot2019 {
 
     ////////////////////////////////////////////////// ADDED THIS FOR TENSOR FLOW  ////////////////////////////////
     //vuforia key
-    private static final String VUFORIA_KEY = "AWlN79T/////AAABmWr9OM0/rkyCv9xvArgzsFQAk+1QECSzNLLooRyXl4SJEguYmtuWqkOyEfk1XbyxiVq95BuSeuD5kgCMFUxvoDZBSrGA05GCbpvavBkmw8wpZDi5ffhERuoFtbbdJR8N6n3ddLfL19Ei+xljlb0it+9ukBP+Q4qCaZwpbTqupaZJGzlCsLPBIjKVUhTa8vEmbs1X8dEzHcIRZ9DIcBEkybCybflhpztnmCnaJ8s5qUd6qJxmgFv7Ei/zCchZm2eLZtjJ7OaQykPBOjb54DLgA34s/Lybr0JrKXL/vPrh0pTIDXd3v1aERMydeZpKNz1oGBBJaVZgU9yID7yRnaO+VHsGNOMgjMHjCbYLMpQKrdGx";
+    private static final String VUFORIA_KEY = "AWlN79T/////AAABmWr9OM0/1rkyCv9xvArgzsFQAk+1QECSzNLLooRyXl4SJEguYmtuWqkOyEfk1XbyxiVq95BuSeuD5kgCMFUxvoDZBSrGA05GCbpvavBkmw8wpZDi5ffhERuoFtbbdJR8N6n3ddLfL19Ei+xljlb0it+9ukBP+Q4qCaZwpbTqupaZJGzlCsLPBIjKVUhTa8vEmbs1X8dEzHcIRZ9DIcBEkybCybflhpztnmCnaJ8s5qUd6qJxmgFv7Ei/zCchZm2eLZtjJ7OaQykPBOjb54DLgA34s/Lybr0JrKXL/vPrh0pTIDXd3v1aERMydeZpKNz1oGBBJaVZgU9yID7yRnaO+VHsGNOMgjMHjCbYLMpQKrdGx";
 
     //vufoia locolizer
     public VuforiaLocalizer vuforia;
@@ -283,9 +283,6 @@ public class HardwareJoeBot2019 {
         // method will accept a value in inches and a power setting and calculate the number of
         // rotations required to drive the given distance.
 
-        // Tell Telemetry what we're starting
-        myOpMode.telemetry.log().add("Starting moveInches method");
-
         // Declare needed variables
         int newmotor0Target;
         int newmotor1Target;
@@ -320,30 +317,11 @@ public class HardwareJoeBot2019 {
             while (myOpMode.opModeIsActive() && (runtime.seconds() < timeoutSec) &&
                     (motor0.isBusy() && motor1.isBusy() && motor2.isBusy() && motor3.isBusy())) {
 
-
-                //Compose Telemetry message
-                myOpMode.telemetry.addLine("> Waiting for robot to reach target");
-                myOpMode.telemetry.addLine("Curr. Pos. |")
-                        .addData("0:", motor0.getCurrentPosition())
-                        .addData("1:", motor1.getCurrentPosition())
-                        .addData("2:", motor2.getCurrentPosition())
-                        .addData("3:", motor3.getCurrentPosition());
-                myOpMode.telemetry.addLine("Target | ")
-                        .addData("0:", newmotor0Target)
-                        .addData("1:", newmotor1Target)
-                        .addData("2:", newmotor2Target)
-                        .addData("3:", newmotor3Target);
-                myOpMode.telemetry.addData("Power: ", power);
-                myOpMode.telemetry.update();
-
-                myOpMode.idle();
             }
 
             // Stop the motors
             stop();
 
-            // Update telemetry log
-            myOpMode.telemetry.log().add("Ending moveInches method");
 
             // Set the motors back to standard mode
             setMode(DcMotor.RunMode.RUN_USING_ENCODER);

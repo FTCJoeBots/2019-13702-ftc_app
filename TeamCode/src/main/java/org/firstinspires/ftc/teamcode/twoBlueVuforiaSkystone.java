@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -38,11 +37,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This is sample code used to explain how to write an autonomous code
  *
  */
-// Starting at the edge of the blue depot
 
-@Autonomous(name="Blue skystone", group="Pushbot")
+@Autonomous(name="twoStones", group="Pushbot")
 //@Disabled
-public class blueVuforiaSkystone extends LinearOpMode {
+public class twoBlueVuforiaSkystone extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
@@ -59,31 +57,49 @@ public class blueVuforiaSkystone extends LinearOpMode {
 
         robot.init(hardwareMap, this);
         U.init(hardwareMap, this);
-        I.init(hardwareMap,this);
+        I.init(hardwareMap, this);
 
         waitForStart();
+        //move to foundation
+        robot.moveInches(39, 0.25, 15);
+        sleep(1000);
+        robot.strafeSeconds(640, -0.7);
+        //grab foundation
+        U.closeGrabber();
+
+        sleep(500);
+        //drive into building site
+        robot.moveInches(-90, 0.25, 15);
+        robot.strafeSeconds(1000, 0.5);
+        // robot.moveInches(-10, 0.25, 10);
+
+        //release grabber
+        U.openGrabber();
+        sleep(500);
+
+        //goes to skystone site
+        robot.moveInches(78, 0.4, 10);
+        robot.rotateDegrees(-85, .25);
+        robot.moveInches(-5, 0.1, 10);
 
         robot.moveInches(6.3, 0.42, 10);
         sleep(300);
         //move all mechanisms out
         U.leftIntakeServoOut();
-        sleep(300);
 
 
         //move lift up
         U.moveLiftEncoder(-900);
-        sleep(1000);
+        sleep(500);
 
         //move arm out
         U.moveArmEncoder(U.ARM_AUTO_GRABBING);
-        sleep(1000);
-
         U.clampClosedHorizontal();
-        sleep(300);
+        sleep(500);
 
 
         //variable for coordinates
-        double coords[] = {777,777};
+        double coords[] = {777, 777};
 
         //loop over I.skystone coordiates a few times
         int i = 0;
@@ -99,11 +115,11 @@ public class blueVuforiaSkystone extends LinearOpMode {
         //if it's greateer than 0, position 2
         //if it's not found (777), position 3
 
-        if(coords[1] < 0){
+        if (coords[1] < 0) {
             telemetry.addLine("first skystone seen");
             telemetry.update();
 
-            robot.moveInches(18,0.28,10);
+            robot.moveInches(18, 0.28, 10);
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
             sleep(500);
@@ -111,10 +127,13 @@ public class blueVuforiaSkystone extends LinearOpMode {
             U.moveArmEncoder(U.ARM_AUTO_PINCH);
             sleep(900);
 
-            robot.moveInches(-15, -.27,10);
+            robot.moveInches(-15, -.27, 10);
             //robot.strafeSeconds(1700, -0.25);
             //robot.resetDegrees(0.15);
-            robot.rotateDegrees(-85,0.25);
+            robot.rotateDegrees(-85, 0.25);
+            robot.strafeSeconds(500, -0.25);
+
+            //goes forward beyond skybridge
             robot.moveInches(40, 0.25, 10);
             U.moveArmEncoder(U.ARM_AUTO_RELEASE_BLOCK);
             U.moveLiftEncoder(U.LIFT_AUTO_RELEASE_BLOCK);
@@ -129,15 +148,15 @@ public class blueVuforiaSkystone extends LinearOpMode {
             sleep(1700);
 
             robot.moveInches(-10, 0.25, 10);
-            robot.strafeSeconds(1000, 0.25);
+            robot.strafeSeconds(1000, -0.25);
 
 
-        }else if(coords[1] != 777){
+        } else if (coords[1] != 777) {
             telemetry.addLine("second skystone seen");
             telemetry.update();
 
-            robot.strafeSeconds(300,0.25);
-            robot.moveInches(19,0.28,10);
+            robot.strafeSeconds(300, 0.25);
+            robot.moveInches(19, 0.28, 10);
 
             U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
             sleep(1400);
@@ -145,11 +164,14 @@ public class blueVuforiaSkystone extends LinearOpMode {
             U.moveArmEncoder(U.ARM_AUTO_PINCH);
             sleep(1000);
 
-            robot.moveInches(-15, -.25,10);
+            robot.moveInches(-15, -.25, 10);
             //robot.strafeSeconds(2300, -0.25);
             //robot.resetDegrees(0.15);
 
-            robot.rotateDegrees(-85,0.25);
+            robot.rotateDegrees(-85, 0.25);
+            robot.strafeSeconds(500, -0.25);
+
+            //goes forward beyond skybridge
             robot.moveInches(48, 0.25, 10);
             U.moveArmEncoder(U.ARM_AUTO_RELEASE_BLOCK);
             U.moveLiftEncoder(U.LIFT_AUTO_RELEASE_BLOCK);
@@ -164,10 +186,10 @@ public class blueVuforiaSkystone extends LinearOpMode {
             sleep(1500);
 
             robot.moveInches(-9, 0.25, 10);
-            robot.strafeSeconds(1000,0.25);
+            robot.strafeSeconds(1000, -0.25);
 
 
-        }else{
+        } else {
             telemetry.addLine("third skystone seen");
             telemetry.update();
 
@@ -184,58 +206,22 @@ public class blueVuforiaSkystone extends LinearOpMode {
             //robot.strafeSeconds(2800, -0.25);
             //robot.resetDegrees(0.25);
 
-            robot.rotateDegrees(-85,0.25);
-            robot.moveInches(57, 0.25, 10);
+            robot.rotateDegrees(-85, 0.25);
+            robot.strafeSeconds(500, -0.25);
+
+            //goes forward beyond skybridge
+            robot.moveInches(65, 0.25, 10);
             U.moveArmEncoder(U.ARM_AUTO_RELEASE_BLOCK);
             U.moveLiftEncoder(U.LIFT_AUTO_RELEASE_BLOCK);
             sleep(1500);
 
-            robot.moveInches(-9, 0.5, 10);
+            //robot.strafeSeconds();
 
-            U.clampVertical();
-            U.leftIntakeServoOut();
-            U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
-            U.moveArmEncoder(U.ARM_IN_POSITION);
-            sleep(1500);
 
-            robot.moveInches(-9, 0.25, 10);
-            robot.strafeSeconds(1000,0.25);
-            sleep(300);
+
 
         }
 
-/*
-        robot.strafeSeconds(300,-0.7);
-
-        U.moveArmEncoder(U.ARM_OUT_POSITION);
-        U.moveLiftEncoder(U.LIFT_UP_POSITION);
-
-        sleep(1500);
-        //grab foundation
-        U.closeGrabber();
-
-        sleep(500);
-        //drive into building site
-        U.clampVertical();
-        U.leftIntakeServoOut();
-        U.moveLiftEncoder(U.LIFT_DOWN_POSITION);
-        U.moveArmEncoder(U.ARM_IN_POSITION);
-        robot.moveInches(-90, 0.25,15);
-
-        robot.strafeSeconds(1500, 0.5);
-
-        // robot.moveInches(-10, 0.25, 10);
-
-        //release grabber
-        U.openGrabber();
-
-        sleep(500);
-
-
-        //back up under skybridge
-        robot.moveInches(20,0.25,10);
-        robot.strafeSeconds(1100, -0.25);
-        robot.moveInches(28, 0.25, 10);*/
-
     }
+
 }

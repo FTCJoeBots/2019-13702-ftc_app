@@ -38,9 +38,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="Red Foundation", group="Pushbot")
+@Autonomous(name="Red Wait Foundation", group="Pushbot")
 //@Disabled
-public class redFoundationParking extends LinearOpMode {
+public class RfoundationWait extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
@@ -77,8 +77,12 @@ public class redFoundationParking extends LinearOpMode {
         U.openGrabber();
         sleep(1000);
 
+        sleep(10000);
+        robot.strafeSeconds(500,0.25);
+
         //back up under skybridge
         robot.moveInches(-55,0.25,10);
+        robot.strafeSeconds(700,0.25);
 
         telemetry.addLine("We're done. Press stop.");
         telemetry.update();

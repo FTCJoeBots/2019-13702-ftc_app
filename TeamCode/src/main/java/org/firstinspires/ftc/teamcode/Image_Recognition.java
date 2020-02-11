@@ -81,7 +81,7 @@ public class Image_Recognition {
     WebcamName webcamName = null;
 
     final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
-    final boolean PHONE_IS_PORTRAIT = false;
+    final boolean PHONE_IS_PORTRAIT = true;
 
 
     final String VUFORIA_KEY =
@@ -110,7 +110,7 @@ public class Image_Recognition {
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraName = webcamName;
         parameters.cameraDirection = CAMERA_CHOICE;
-        parameters.useExtendedTracking = false;
+        parameters.useExtendedTracking = true;
 
         myOpMode.telemetry.addLine("About to initialize vuforia");
         myOpMode.telemetry.update();
@@ -135,7 +135,7 @@ public class Image_Recognition {
 
     }
 
-    /*public double SkystonePostion() {
+    public double SkystonePostion() {
 
         VuforiaTrackables targetsSkyStone = vuforia.loadTrackablesFromAsset("Skystone");
         myOpMode.telemetry.addLine("finishing init");
@@ -177,9 +177,10 @@ public class Image_Recognition {
                 .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
 
-        /**  Let all the trackable listeners know where the phone is.
+        /**  Let all the trackable listeners know where the phone is.**/
         for (VuforiaTrackable trackable : allTrackables) {
             ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
+
         }
 
 
@@ -202,30 +203,61 @@ public class Image_Recognition {
                     break;
                 }
             }
+            VectorF translation = lastLocation.getTranslation();
+
+            myOpMode.telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f", translation.get(0), translation.get(1), translation.get(2));
+
 
             // Provide feedback as to where the robot is located (if we know).
             if (targetVisible) {
                 // express position (translation) of robot in inches.
-                VectorF translation = lastLocation.getTranslation();
+
                 myOpMode.telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
                         translation.get(0), translation.get(1), translation.get(2));
-                if (translation.get(1) > -180) {
+                if (translation.get(1) < 0) {
                     myOpMode.telemetry.addLine("First Postion");
+                    return 1;
                 }
-                if (translation.get(1) < -180) {
+                if (translation.get(1) > 0) {
                     myOpMode.telemetry.addLine("Seccond Position");
+                    return 2;
                 }
 
 
             } else {
                 myOpMode.telemetry.addLine("Third Position");
+                return 3;
             }
             myOpMode.telemetry.update();
-        }
 
-        return 0;
+        }
+        VectorF translation = lastLocation.getTranslation();
+        if (targetVisible) {
+            // express position (translation) of robot in inches.
+
+            myOpMode.telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                    translation.get(0), translation.get(1), translation.get(2));
+            if (translation.get(1) < 0) {
+                myOpMode.telemetry.addLine("First Postion");
+                return 1;
+            }
+            if (translation.get(1) > 0) {
+                myOpMode.telemetry.addLine("Seccond Position");
+                return 2;
+            }
+
+
+        } else {
+            myOpMode.telemetry.addLine("Third Position");
+            return 3;
+        }
+        myOpMode.telemetry.update();
+
+        return 3;
+
     }
-**/
+
+
 
     public double[] skystone_cooridinates() {
         double[] coords = {-999, -999};

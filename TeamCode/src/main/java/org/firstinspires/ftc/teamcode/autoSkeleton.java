@@ -41,7 +41,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="Strafe Test", group="Pushbot")
-//@Disabled
+@Disabled
 public class autoSkeleton extends LinearOpMode {
 
     /* Declare OpMode members. */

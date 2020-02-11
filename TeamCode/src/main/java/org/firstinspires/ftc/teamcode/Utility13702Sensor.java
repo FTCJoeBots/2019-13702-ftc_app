@@ -1,30 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-
-import java.util.List;
-
-import static java.lang.StrictMath.abs;
 
 /**
  * This is NOT an opmode. This is a hardware class used to abstract the hardware config for the
@@ -44,7 +27,7 @@ import static java.lang.StrictMath.abs;
  *
  */
 
-public class Utility13702 {
+public class Utility13702Sensor {
     /* Public OpMode members. */
 
     // Declare Motors
@@ -125,9 +108,15 @@ public class Utility13702 {
 
     int armTarget = 0;
 
+    // Declare color sensors
+    ColorSensor colorSensorRight;
+    ColorSensor colorSensorLeft;
+    DistanceSensor distanceSensorRight;
+    DistanceSensor distanceSensorLeft;
+
 
     /* Constructor */
-    public Utility13702() {
+    public Utility13702Sensor() {
 
     }
 
@@ -150,6 +139,14 @@ public class Utility13702 {
         rightIntakeServo = hwMap.servo.get("rightIntakeServo");
         grabberServo = hwMap.servo.get("grabberServo");
         capstoneServo = hwMap.servo.get("capstoneServo");
+
+        // Get color sensor device
+        colorSensorRight = hwMap.colorSensor.get("colorSensorRight");
+        colorSensorLeft = hwMap.colorSensor.get("colorSensorLeft");
+
+        // Get distance sensor device
+        distanceSensorRight = hwMap.get(DistanceSensor.class, "colorSensorRight");
+        distanceSensorLeft = hwMap.get(DistanceSensor.class, "colorSensorLeft");
 
         // Set Default Motor Directions
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
@@ -187,6 +184,15 @@ public class Utility13702 {
        // armMotor.setTargetPosition(0);
         leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        if (colorSensorRight instanceof SwitchableLight) {
+            ((SwitchableLight) colorSensorRight).enableLight(true);
+        }
+
+
+        if (colorSensorLeft instanceof SwitchableLight) {
+            ((SwitchableLight) colorSensorLeft).enableLight(true);
+        }
 
     }
 
